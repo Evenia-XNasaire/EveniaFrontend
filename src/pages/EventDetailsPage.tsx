@@ -70,9 +70,9 @@ const EventDetailsPage: React.FC = () => {
     const [selectedTickets, setSelectedTickets] = useState<{ [key: number]: number }>({});
 
     const calculateServiceFee = (price: number) => {
-        if (price >= 10 && price <= 9999) return { fee: price * 0.05, label: '5%' };
-        if (price >= 10000 && price <= 24000) return { fee: price * 0.04, label: '4%' };
-        if (price >= 25000) return { fee: price * 0.035, label: '3.5%' };
+        if (price >= 10 && price <= 9999) return { fee: Math.round(price * 0.05), label: '5%' };
+        if (price >= 10000 && price <= 24000) return { fee: Math.round(price * 0.04), label: '4%' };
+        if (price >= 25000) return { fee: Math.round(price * 0.035), label: '3.5%' };
         return { fee: 0, label: '0%' };
     };
 

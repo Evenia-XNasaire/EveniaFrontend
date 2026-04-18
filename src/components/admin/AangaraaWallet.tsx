@@ -92,7 +92,8 @@ const AangaraaWallet: React.FC = () => {
 
     const withdrawMutation = useMutation({
         mutationFn: async (data: any) => {
-            const res = await api.post('/admin/wallet/withdraw', data);
+            const payload = { ...data, amount: Math.round(parseFloat(data.amount)) };
+            const res = await api.post('/admin/wallet/withdraw', payload);
             return res.data;
         },
         onSuccess: (data) => {

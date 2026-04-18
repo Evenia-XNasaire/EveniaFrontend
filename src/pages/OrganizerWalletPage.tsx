@@ -84,7 +84,7 @@ const OrganizerWalletPage: React.FC = () => {
             return;
         }
         withdrawMutation.mutate({
-            amount: parseFloat(withdrawAmount),
+            amount: Math.round(parseFloat(withdrawAmount)),
             method: withdrawMethod,
             phone_number: withdrawPhone,
             username: withdrawName
