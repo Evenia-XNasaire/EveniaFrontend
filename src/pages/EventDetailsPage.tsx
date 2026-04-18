@@ -781,9 +781,9 @@ const EventDetailsPage: React.FC = () => {
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <span className="text-xl font-black text-primary block">{type.price.toLocaleString()} FCFA</span>
+                                                    <span className="text-xl font-black text-primary block">{Math.round(type.price).toLocaleString()} FCFA</span>
                                                     <span className="text-[10px] font-bold text-[var(--text-muted)]">
-                                                        + {(calculateServiceFee(type.price).fee).toLocaleString()} FCFA frais
+                                                        + {Math.round(calculateServiceFee(type.price).fee).toLocaleString()} FCFA frais
                                                     </span>
                                                 </div>
                                             </div>
@@ -912,15 +912,15 @@ const EventDetailsPage: React.FC = () => {
                                         <div className="space-y-2 pt-4 border-t border-[var(--border)]">
                                             <div className="flex justify-between items-center text-xs text-[var(--text-muted)] font-bold">
                                                 <span>Sous-total billets</span>
-                                                <span>{totalAmountBase.toLocaleString()} FCFA</span>
+                                                <span>{Math.round(totalAmountBase).toLocaleString()} FCFA</span>
                                             </div>
                                             <div className="flex justify-between items-center text-xs text-primary font-bold">
                                                 <span>Total Frais de Service</span>
-                                                <span>+ {totalServiceFee.toLocaleString()} FCFA</span>
+                                                <span>+ {Math.round(totalServiceFee).toLocaleString()} FCFA</span>
                                             </div>
                                             <div className="flex justify-between items-center pt-2 gap-2">
                                                 <span className="font-black text-lg">Total à payer</span>
-                                                <span className="text-2xl font-black text-primary">{totalAmount.toLocaleString()} FCFA</span>
+                                                <span className="text-2xl font-black text-primary">{Math.round(totalAmount).toLocaleString()} FCFA</span>
                                             </div>
                                         </div>
 

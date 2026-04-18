@@ -165,9 +165,9 @@ const OrganizerWalletPage: React.FC = () => {
                 {/* KPI Cards */}
                 <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {[
-                        { label: 'Revenu Total', value: `${walletData.total_revenue.toLocaleString()} FCFA`, Icon: DollarSign, color: 'primary' },
-                        { label: 'Solde Retirable', value: `${walletData.balance.toLocaleString()} FCFA`, Icon: ArrowUpRight, color: 'accent' },
-                        { label: 'Total Retiré', value: `${walletData.total_withdrawn.toLocaleString()} FCFA`, Icon: History, color: 'danger' },
+                        { label: 'Revenu Total', value: `${Math.round(walletData.total_revenue).toLocaleString()} FCFA`, Icon: DollarSign, color: 'primary' },
+                        { label: 'Solde Retirable', value: `${Math.round(walletData.balance).toLocaleString()} FCFA`, Icon: ArrowUpRight, color: 'accent' },
+                        { label: 'Total Retiré', value: `${Math.round(walletData.total_withdrawn).toLocaleString()} FCFA`, Icon: History, color: 'danger' },
                     ].map((item, idx) => (
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -232,7 +232,7 @@ const OrganizerWalletPage: React.FC = () => {
                                             )}
                                         </div>
                                         <div>
-                                            <p className="text-2xl font-black">{withdrawal.amount.toLocaleString()} FCFA</p>
+                                            <p className="text-2xl font-black">{Math.round(withdrawal.amount).toLocaleString()} FCFA</p>
                                             <div className="flex items-center gap-2 mt-1">
                                                 <span className="text-[10px] font-black text-[var(--text-muted)] uppercase bg-[var(--surface)] px-2 py-1 rounded-lg border border-[var(--border)]">
                                                     {format(new Date(withdrawal.created_at), 'Pp', { locale: fr })}
@@ -342,7 +342,7 @@ const OrganizerWalletPage: React.FC = () => {
 
                                     <div className="p-4 bg-primary/5 rounded-2xl flex items-center justify-between border border-primary/10">
                                         <span className="font-bold text-[var(--text-muted)]">Solde disponible</span>
-                                        <span className="font-black text-primary text-xl">{walletData.balance.toLocaleString()} FCFA</span>
+                                        <span className="font-black text-primary text-xl">{Math.round(walletData.balance).toLocaleString()} FCFA</span>
                                     </div>
 
                                     <form onSubmit={handleWithdrawSubmit} className="space-y-6">
@@ -505,7 +505,7 @@ const OrganizerWalletPage: React.FC = () => {
                                         </div>
                                         <div>
                                             <p className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)]">Détails du Retrait</p>
-                                            <h2 className="text-3xl font-black">{selectedWithdrawal.amount.toLocaleString()} FCFA</h2>
+                                            <h2 className="text-3xl font-black">{Math.round(selectedWithdrawal.amount).toLocaleString()} FCFA</h2>
                                         </div>
                                     </div>
 

@@ -112,7 +112,7 @@ const AangaraaWallet: React.FC = () => {
     });
 
     const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('fr-CM', { style: 'currency', currency: 'XAF' }).format(amount);
+        return new Intl.NumberFormat('fr-CM', { style: 'currency', currency: 'XAF', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.round(amount));
     };
 
     if (isLoading) return <div className="card-surface p-6 flex justify-center"><Loader2 className="animate-spin text-primary" /></div>;
