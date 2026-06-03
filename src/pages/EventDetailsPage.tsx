@@ -355,7 +355,7 @@ const EventDetailsPage: React.FC = () => {
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="bg-[var(--surface)] border border-[var(--border)] p-8 rounded-[3rem] max-w-lg w-full shadow-2xl space-y-8 text-center"
+                            className="bg-[var(--surface)] border border-[var(--border)] p-6 sm:p-10 rounded-[2rem] sm:rounded-[3rem] max-w-lg w-full shadow-2xl space-y-6 sm:space-y-8 text-center"
                         >
                             <div className="relative">
                                 <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
@@ -466,9 +466,9 @@ const EventDetailsPage: React.FC = () => {
                                 <div className="w-12 h-12 bg-danger text-white rounded-full flex items-center justify-center shrink-0">
                                     <AlertCircle size={24} />
                                 </div>
-                                <div className="min-w-0">
-                                    <h4 className="text-lg leading-none mb-1">Erreur de paiement ⚠️</h4>
-                                    <p className="text-sm opacity-80 font-medium truncate">{purchaseError}</p>
+                                <div className="min-w-0 flex-1">
+                                    <h4 className="text-base sm:text-lg leading-tight mb-1">Erreur de paiement ⚠️</h4>
+                                    <p className="text-xs sm:text-sm opacity-90 font-bold leading-relaxed">{purchaseError}</p>
                                 </div>
                             </div>
                             <button
