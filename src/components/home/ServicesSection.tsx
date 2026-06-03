@@ -60,9 +60,9 @@ const ServicesSection: React.FC = () => {
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
                                 whileHover={{ y: -10 }}
-                                className="glass-card p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-[var(--border)] hover:border-primary/30 transition-all text-center group"
+                                className="glass-card p-6 sm:p-8 rounded-none border border-[var(--border)] hover:border-primary/30 transition-all text-center group"
                             >
-                                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-linear-to-br from-primary/20 to-accent/20 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-linear-to-br from-primary/20 to-accent/20 rounded-none flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all">
                                     <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary group-hover:text-accent transition-colors" />
                                 </div>
                                 <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-[var(--text)]">{service.title}</h3>

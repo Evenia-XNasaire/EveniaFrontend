@@ -30,6 +30,11 @@ import AdminWalletPage from './pages/AdminWalletPage';
 import AdminEventsPage from './pages/AdminEventsPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AdminStatsPage from './pages/AdminStatsPage';
+import HelpCenterPage from './pages/HelpCenterPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import FAQPage from './pages/FAQPage';
+import HelpCategoryPage from './pages/HelpCategoryPage';
+import HelpArticleDetailPage from './pages/HelpArticleDetailPage';
 
 const queryClient = new QueryClient();
 
@@ -73,14 +78,21 @@ const AppContent: React.FC = () => {
       <Route path="/admin/users" element={<AdminUsersPage />} />
       <Route path="/organizer/wallet" element={<OrganizerWalletPage />} />
       <Route path="/guide" element={<MainLayout><GuidePage /></MainLayout>} />
-      <Route path="/verify-email" element={<EmailVerification />} />
+      <Route path="/verify-email" element={<MainLayout><EmailVerification /></MainLayout>} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/organizer/register" element={<MainLayout><RegisterPage /></MainLayout>} />
       <Route path="/how-it-works" element={<MainLayout><GuidePage /></MainLayout>} />
+      <Route path="/help-center" element={<MainLayout><HelpCenterPage /></MainLayout>} />
+      <Route path="/help-center/:categoryId" element={<MainLayout><HelpCategoryPage /></MainLayout>} />
+      <Route path="/help-center/article/:articleId" element={<MainLayout><HelpArticleDetailPage /></MainLayout>} />
+      <Route path="/privacy" element={<MainLayout><PrivacyPolicyPage /></MainLayout>} />
+      <Route path="/faq" element={<MainLayout><FAQPage /></MainLayout>} />
     </Routes>
   );
 };
+
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
@@ -88,6 +100,7 @@ function App() {
       <ThemeProvider>
         <AuthProvider>
           <Router>
+            <ScrollToTop />
             <AppContent />
           </Router>
         </AuthProvider>

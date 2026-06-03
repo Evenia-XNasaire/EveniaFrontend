@@ -72,7 +72,7 @@ const HowItWorksSection: React.FC = () => {
                         viewport={{ once: true }}
                         className="space-y-8"
                     >
-                        <div className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-xs font-black uppercase tracking-widest">
+                        <div className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-none text-xs font-black uppercase tracking-widest">
                             Comment ça marche ?
                         </div>
                         <h2 className="text-3xl sm:text-4xl md:text-6xl font-black leading-tight tracking-tighter">
@@ -103,11 +103,11 @@ const HowItWorksSection: React.FC = () => {
                         viewport={{ once: true }}
                         className="relative"
                     >
-                        <div className="aspect-square bg-linear-to-br from-primary/20 to-accent/20 rounded-[4rem] flex items-center justify-center p-12">
-                            <div className="bg-[var(--surface)] p-8 rounded-[3rem] shadow-2xl border border-[var(--border)] relative z-10 w-full">
+                        <div className="aspect-square bg-linear-to-br from-primary/20 to-accent/20 rounded-none flex items-center justify-center p-12">
+                            <div className="bg-[var(--surface)] p-8 rounded-none shadow-2xl border border-[var(--border)] relative z-10 w-full">
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30">
+                                        <div className="w-12 h-12 rounded-none bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30">
                                             <Ticket size={24} />
                                         </div>
                                         <div>
@@ -117,7 +117,7 @@ const HowItWorksSection: React.FC = () => {
                                     </div>
                                     <div className="h-px bg-linear-to-r from-transparent via-[var(--border)] to-transparent" />
                                     <div className="flex justify-center py-4">
-                                        <div className="p-4 bg-white rounded-3xl shadow-inner border-4 border-primary/10">
+                                        <div className="p-4 bg-white rounded-none shadow-inner border-4 border-primary/10">
                                             {/* Simplified QR Placeholder */}
                                             <div className="w-32 h-32 grid grid-cols-4 grid-rows-4 gap-1 opacity-20">
                                                 {Array.from({ length: 16 }).map((_, i) => (
@@ -161,7 +161,7 @@ const HowItWorksSection: React.FC = () => {
                                 whileHover={{ y: -10 }}
                                 className="card-surface p-6 sm:p-8 space-y-4 sm:space-y-6 group border-[var(--border)]"
                             >
-                                <div className={`w-16 h-16 rounded-2xl ${feature.bg} ${feature.color} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6`}>
+                                <div className={`w-16 h-16 rounded-none ${feature.bg} ${feature.color} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6`}>
                                     {feature.icon}
                                 </div>
                                 <div className="space-y-3">
@@ -178,14 +178,14 @@ const HowItWorksSection: React.FC = () => {
 
             {/* Organizer Section */}
             <div className="container mx-auto px-6">
-                <div className="bg-linear-to-br from-[var(--background)] to-[var(--surface)] rounded-[4rem] p-12 md:p-20 border border-[var(--border)] shadow-2xl relative overflow-hidden">
+                <div className="bg-linear-to-br from-[var(--background)] to-[var(--surface)] rounded-none p-12 md:p-20 border border-[var(--border)] shadow-2xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-10 opacity-5">
                         <Users size={400} />
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10 items-center">
                         <div className="space-y-8">
-                            <div className="inline-block px-4 py-2 bg-accent/10 text-accent rounded-full text-xs font-black uppercase tracking-widest">
+                            <div className="inline-block px-4 py-2 bg-accent/10 text-accent rounded-none text-xs font-black uppercase tracking-widest">
                                 Pour les organisateurs
                             </div>
                             <h3 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
@@ -216,7 +216,7 @@ const HowItWorksSection: React.FC = () => {
                             </Link>
                         </div>
 
-                        <div className="bg-[var(--surface)] rounded-[3rem] p-8 shadow-2xl border border-[var(--border)] rotate-3">
+                        <div className="bg-[var(--surface)] rounded-none p-8 shadow-2xl border border-[var(--border)] rotate-3">
                             <div className="space-y-6">
                                 <div className="flex justify-between items-center">
                                     <p className="font-black">Ventes du jour</p>
@@ -229,16 +229,16 @@ const HowItWorksSection: React.FC = () => {
                                             initial={{ height: 0 }}
                                             whileInView={{ height: `${h}%` }}
                                             transition={{ delay: i * 0.1, duration: 1 }}
-                                            className="flex-1 bg-primary/20 rounded-t-lg border-t-2 border-primary"
+                                            className="flex-1 bg-primary/20 rounded-t-none border-t-2 border-primary"
                                         />
                                     ))}
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="p-4 bg-[var(--background)] rounded-2xl border border-[var(--border)]">
+                                    <div className="p-4 bg-[var(--background)] rounded-none border border-[var(--border)]">
                                         <p className="text-[10px] font-black text-[var(--text-muted)] uppercase">Billets</p>
                                         <p className="text-xl font-black">1,284</p>
                                     </div>
-                                    <div className="p-4 bg-[var(--background)] rounded-2xl border border-[var(--border)]">
+                                    <div className="p-4 bg-[var(--background)] rounded-none border border-[var(--border)]">
                                         <p className="text-[10px] font-black text-[var(--text-muted)] uppercase">Revenu</p>
                                         <p className="text-xl font-black">2.4M FCFA</p>
                                     </div>

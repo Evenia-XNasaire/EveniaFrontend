@@ -3,6 +3,12 @@ import { motion } from 'framer-motion';
 import { Smartphone, Monitor, Globe } from 'lucide-react';
 import { FaGooglePlay, FaApple } from 'react-icons/fa';
 
+const DOWNLOAD_LINKS = {
+    android: "https://expo.dev/artifacts/eas/mp7QKQJC3edtLAifb6Bitr.apk", // Lien final build a5311878
+    ios: "#", // À définir plus tard
+    web: "https://evenia.arited.org"
+};
+
 const MobileWebAppSection: React.FC = () => {
     return (
         <section className="py-24 relative overflow-hidden">
@@ -16,7 +22,7 @@ const MobileWebAppSection: React.FC = () => {
                         viewport={{ once: true }}
                         className="space-y-8"
                     >
-                        <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider">
+                        <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-none text-sm font-bold uppercase tracking-wider">
                             <Smartphone className="w-4 h-4" />
                             Disponible partout
                         </div>
@@ -29,21 +35,23 @@ const MobileWebAppSection: React.FC = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-4">
-                            <a href="https://expo.dev/artifacts/eas/gWVP11F3PFphujtacRUEmx.apk" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--text)] text-[var(--background)] px-6 py-4 rounded-2xl font-black hover:bg-primary hover:text-white transition-all group">
+                            <a href={DOWNLOAD_LINKS.ios} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--text)] text-[var(--background)] px-6 py-4 rounded-none font-black hover:bg-primary hover:text-white transition-all group">
+
                                 <FaApple className="w-6 h-6" />
                                 <div className="text-left">
                                     <div className="text-[10px] uppercase tracking-wider opacity-70">Télécharger sur</div>
                                     <div className="text-base leading-none whitespace-nowrap">App Store (iOS)</div>
                                 </div>
                             </a>
-                            <a href="https://expo.dev/artifacts/eas/gWVP11F3PFphujtacRUEmx.apk" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--text)] text-[var(--background)] px-6 py-4 rounded-2xl font-black hover:bg-primary hover:text-white transition-all group">
+                            <a href={DOWNLOAD_LINKS.android} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--text)] text-[var(--background)] px-6 py-4 rounded-none font-black hover:bg-primary hover:text-white transition-all group">
+
                                 <FaGooglePlay className="w-5 h-5 ml-1" />
                                 <div className="text-left">
                                     <div className="text-[10px] uppercase tracking-wider opacity-70">Télécharger sur</div>
                                     <div className="text-base leading-none whitespace-nowrap">Play Store (Android)</div>
                                 </div>
                             </a>
-                            <a href="https://eveniatickets.onrender.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--surface)] text-[var(--text)] border-2 border-[var(--border)] px-6 py-4 rounded-2xl font-black hover:border-primary hover:text-primary transition-all group">
+                            <a href="https://evenia.arited.org" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--surface)] text-[var(--text)] border-2 border-[var(--border)] px-6 py-4 rounded-none font-black hover:border-primary hover:text-primary transition-all group">
                                 <Globe className="w-6 h-6" />
                                 <div className="text-left">
                                     <div className="text-[10px] uppercase tracking-wider opacity-70">Disponible en</div>
@@ -60,17 +68,17 @@ const MobileWebAppSection: React.FC = () => {
                         className="relative"
                     >
                         {/* Abstract Phone Mockup Representation */}
-                        <div className="relative mx-auto w-72 h-[500px] bg-gray-900 rounded-[3rem] p-4 shadow-2xl border-8 border-gray-800 rotate-[-6deg] hover:rotate-0 transition-all duration-500">
-                            <div className="h-full w-full bg-[var(--surface)] rounded-[2rem] overflow-hidden relative">
+                        <div className="relative mx-auto w-72 h-[500px] bg-gray-900 rounded-none p-4 shadow-2xl border-8 border-gray-800 rotate-[-6deg] hover:rotate-0 transition-all duration-500">
+                            <div className="h-full w-full bg-[var(--surface)] rounded-none overflow-hidden relative">
                                 <div className="absolute top-0 left-0 right-0 h-32 bg-linear-to-b from-primary/20 to-transparent p-6">
-                                    <div className="w-12 h-1 bg-white/20 rounded-full mx-auto mb-4" />
-                                    <div className="h-8 w-24 bg-white/20 rounded-lg" />
+                                    <div className="w-12 h-1 bg-white/20 rounded-none mx-auto mb-4" />
+                                    <div className="h-8 w-24 bg-white/20 rounded-none" />
                                 </div>
                                 {/* Mock UI Elements */}
                                 <div className="absolute top-32 inset-x-4 space-y-4">
-                                    <div className="h-40 bg-[var(--background)] rounded-2xl shadow-lg border border-[var(--border)]" />
-                                    <div className="h-24 bg-[var(--background)] rounded-2xl shadow-lg border border-[var(--border)]" />
-                                    <div className="h-24 bg-[var(--background)] rounded-2xl shadow-lg border border-[var(--border)]" />
+                                    <div className="h-40 bg-[var(--background)] rounded-none shadow-lg border border-[var(--border)]" />
+                                    <div className="h-24 bg-[var(--background)] rounded-none shadow-lg border border-[var(--border)]" />
+                                    <div className="h-24 bg-[var(--background)] rounded-none shadow-lg border border-[var(--border)]" />
                                 </div>
                             </div>
                         </div>

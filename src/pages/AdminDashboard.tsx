@@ -4,7 +4,7 @@ import api from '../services/api';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, DollarSign, Activity, Trash2, UserPlus, UserMinus, ShoppingBag, Edit } from 'lucide-react';
+import { Users, Calendar, DollarSign, Activity, Trash2, UserPlus, UserMinus, ShoppingBag, Edit, MessageSquare } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -180,6 +180,76 @@ const AdminDashboard: React.FC = () => {
                             color="bg-red-500"
                             delay={600}
                         />
+                    </div>
+                </section>
+
+                {/* Support & Feedback Analytics */}
+                <section className="space-y-6">
+                    <div className="flex items-center gap-4">
+                        <hr className="flex-1 border-[var(--border)]" />
+                        <span className="text-[10px] font-black uppercase text-[var(--text-muted)] tracking-widest">Satisfaction Support</span>
+                        <hr className="flex-1 border-[var(--border)]" />
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="card-surface p-8 flex flex-col items-center justify-center text-center gap-2">
+                            <span className="text-4xl font-black text-emerald-500">94%</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Articles Utiles</span>
+                        </div>
+                        <div className="card-surface p-8 flex flex-col items-center justify-center text-center gap-2">
+                            <span className="text-4xl font-black text-red-500">6%</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Retours Négatifs</span>
+                        </div>
+                        <div className="card-surface p-8 flex flex-col items-center justify-center text-center gap-2 border-primary border-2">
+                            <span className="text-4xl font-black text-primary">12</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Feedbacks à traiter</span>
+                        </div>
+                    </div>
+
+                    <div className="card-surface p-0 overflow-hidden">
+                        <div className="bg-primary/5 p-4 border-b border-[var(--border)]">
+                            <h3 className="text-sm font-black uppercase tracking-tighter italic flex items-center gap-2">
+                                <MessageSquare size={16} /> Retours détaillés des utilisateurs
+                            </h3>
+                        </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left">
+                                <thead className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] bg-[var(--background)]">
+                                    <tr>
+                                        <th className="px-6 py-4">Article</th>
+                                        <th className="px-6 py-4 text-center">Utile ?</th>
+                                        <th className="px-6 py-4">Commentaire / Feedback</th>
+                                        <th className="px-6 py-4 text-right">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-[var(--border)]">
+                                    <tr className="hover:bg-primary/5 transition-colors">
+                                        <td className="px-6 py-4 text-sm font-bold">moyens-paiement</td>
+                                        <td className="px-6 py-4 text-center">
+                                            <span className="bg-red-500/10 text-red-500 px-3 py-1 rounded-none text-[10px] font-black">NON</span>
+                                        </td>
+                                        <td className="px-6 py-4 text-sm font-medium">"J'aimerais savoir si PayPal sera disponible bientôt au Cameroun."</td>
+                                        <td className="px-6 py-4 text-right text-[10px] font-black text-[var(--text-muted)]">IL Y A 10 MIN</td>
+                                    </tr>
+                                    <tr className="hover:bg-primary/5 transition-colors">
+                                        <td className="px-6 py-4 text-sm font-bold">ticket-non-recu</td>
+                                        <td className="px-6 py-4 text-center">
+                                            <span className="bg-emerald-500/10 text-emerald-500 px-3 py-1 rounded-none text-[10px] font-black">OUI</span>
+                                        </td>
+                                        <td className="px-6 py-4 text-sm font-medium">--</td>
+                                        <td className="px-6 py-4 text-right text-[10px] font-black text-[var(--text-muted)]">IL Y A 22 MIN</td>
+                                    </tr>
+                                    <tr className="hover:bg-primary/5 transition-colors">
+                                        <td className="px-6 py-4 text-sm font-bold">creer-evenement</td>
+                                        <td className="px-6 py-4 text-center">
+                                            <span className="bg-red-500/10 text-red-500 px-3 py-1 rounded-none text-[10px] font-black">NON</span>
+                                        </td>
+                                        <td className="px-6 py-4 text-sm font-medium text-primary">"On ne voit pas comment ajouter des billets VIP."</td>
+                                        <td className="px-6 py-4 text-right text-[10px] font-black text-[var(--text-muted)]">IL Y A 1 H</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </section>
 

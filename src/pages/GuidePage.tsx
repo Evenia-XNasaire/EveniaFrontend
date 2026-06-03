@@ -248,9 +248,6 @@ const GuidePage: React.FC = () => {
                                                 <span className="text-primary font-black">3.5%</span>
                                             </div>
                                         </div>
-                                        <p className="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-tight">
-                                            Note: Ces frais sont partagés entre l'organisateur et la plateforme pour offrir le meilleur service.
-                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -338,7 +335,7 @@ const GuidePage: React.FC = () => {
                                     </a>
                                     <a href="mailto:anngaraevenia@gmail.com" className="flex items-center gap-3 p-4 rounded-xl bg-primary/10 text-primary font-bold hover:bg-primary/20 transition-all border border-primary/20">
                                         <Info size={20} />
-                                        Envoyer un Email
+                                        contact@evenia.ticket
                                     </a>
                                 </div>
                             </div>

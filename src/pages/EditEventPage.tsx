@@ -197,17 +197,17 @@ const EditEventPage: React.FC = () => {
 
     return (
         <DashboardLayout role="organizer">
-            <main className="p-6 lg:p-10 space-y-10">
-                <header className="flex items-center gap-4">
+            <main className="p-4 lg:p-8 space-y-6">
+                <header className="flex items-center gap-3 sm:gap-4">
                     <button
                         onClick={() => navigate('/organizer')}
-                        className="p-3 rounded-2xl bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] hover:text-primary transition-all"
+                        className="p-2 sm:p-3 rounded-none bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] hover:text-primary transition-all shrink-0"
                     >
-                        <ArrowLeft size={20} />
+                        <ArrowLeft size={18} className="sm:w-5 sm:h-5" />
                     </button>
                     <div>
-                        <h1 className="text-4xl font-black tracking-tight">Modifier l'événement ✏️</h1>
-                        <p className="text-[var(--text-muted)] font-medium">Mettez à jour les détails de votre événement.</p>
+                        <h1 className="text-2xl sm:text-4xl font-black tracking-tight">Modifier l'événement</h1>
+                        <p className="text-[10px] sm:text-sm text-[var(--text-muted)] font-medium">Mettez à jour les détails de votre événement.</p>
                     </div>
                 </header>
 
@@ -228,10 +228,10 @@ const EditEventPage: React.FC = () => {
                     )}
                 </AnimatePresence>
 
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 xl:grid-cols-3 gap-10">
-                    <div className="xl:col-span-2 space-y-8">
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div className="xl:col-span-2 space-y-6">
                         {/* Basic Info */}
-                        <section className="card-surface p-8 space-y-6">
+                        <section className="card-surface p-6 space-y-4">
                             <h3 className="text-xl font-black flex items-center gap-2">
                                 <Info className="text-primary" /> Informations Générales
                             </h3>
@@ -243,27 +243,39 @@ const EditEventPage: React.FC = () => {
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                     placeholder="Ex: Afrobeats & Coupé-Décalé 2026"
-                                    className="w-full bg-[var(--background)] border border-[var(--border)] rounded-2xl p-4 focus:border-primary transition-all outline-none font-bold text-lg"
+                                    className="w-full bg-[var(--background)] border border-[var(--border)] rounded-none p-4 focus:border-primary transition-all outline-none font-bold text-base sm:text-lg"
                                 />
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)]">Catégorie</label>
-                                    <select
-                                        value={formData.category}
-                                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                        className="w-full bg-[var(--background)] border border-[var(--border)] rounded-2xl p-4 focus:border-primary transition-all outline-none font-bold"
-                                    >
-                                        <option value="evenia">Tous événements (Défaut)</option>
-                                        <option value="événement">Événement / Musique & Festival</option>
-                                        <option value="match">Match / Sport</option>
-                                        <option value="cinema">Cinéma</option>
-                                        <option value="bapteme">Baptême</option>
-                                        <option value="anniversaire">Anniversaire</option>
-                                        <option value="conference">Conférence</option>
-                                    </select>
+                            <div className="space-y-4">
+                                <label className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)]">Catégorie d'événement</label>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                    {[
+                                        { id: 'concert', label: 'Concert', icon: '🎵' },
+                                        { id: 'match', label: 'Sport', icon: '⚽' },
+                                        { id: 'cinema', label: 'Cinéma', icon: '🎬' },
+                                        { id: 'conference', label: 'Conférence', icon: '🎤' },
+                                        { id: 'bapteme', label: 'Baptême', icon: '🕊️' },
+                                        { id: 'anniversaire', label: 'Anniversaire', icon: '🎂' },
+                                    ].map((cat) => (
+                                        <button
+                                            key={cat.id}
+                                            type="button"
+                                            onClick={() => setFormData({ ...formData, category: cat.id })}
+                                            className={`p-3 sm:p-4 border-2 transition-all flex flex-col items-center gap-2 text-center rounded-none ${formData.category === cat.id
+                                                ? 'border-primary bg-primary/5'
+                                                : 'border-[var(--border)] hover:border-primary/20'
+                                                }`}
+                                        >
+                                            <span className="text-2xl">{cat.icon}</span>
+                                            <span className={`text-[10px] sm:text-xs font-black uppercase tracking-wider ${formData.category === cat.id ? 'text-primary' : 'text-[var(--text-muted)]'}`}>
+                                                {cat.label}
+                                            </span>
+                                        </button>
+                                    ))}
                                 </div>
+                            </div>
                                 <div className="space-y-2">
                                     <label className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)]">Date et Heure</label>
                                     <div className="relative">
@@ -273,7 +285,7 @@ const EditEventPage: React.FC = () => {
                                             required
                                             value={formData.date_time}
                                             onChange={(e) => setFormData({ ...formData, date_time: e.target.value })}
-                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-2xl p-4 pl-12 focus:border-primary transition-all outline-none font-bold"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-none p-4 pl-12 focus:border-primary transition-all outline-none font-bold text-sm"
                                         />
                                     </div>
                                 </div>
@@ -300,7 +312,7 @@ const EditEventPage: React.FC = () => {
                                         value={formData.location}
                                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                         placeholder="Ex: Palais de la Culture, Abidjan"
-                                        className="w-full bg-[var(--background)] border border-[var(--border)] rounded-2xl p-4 pl-12 focus:border-primary transition-all outline-none font-bold"
+                                        className="w-full bg-[var(--background)] border border-[var(--border)] rounded-none p-4 pl-12 focus:border-primary transition-all outline-none font-bold text-sm"
                                     />
                                 </div>
                             </div>
@@ -319,7 +331,7 @@ const EditEventPage: React.FC = () => {
                         </section>
 
                         {/* Tickets Section */}
-                        <section className="card-surface p-8 space-y-6">
+                        <section className="card-surface p-6 space-y-4">
                             <div className="flex justify-between items-center">
                                 <h3 className="text-xl font-black flex items-center gap-2">
                                     <Ticket className="text-primary" /> Types de Billets
@@ -335,58 +347,64 @@ const EditEventPage: React.FC = () => {
 
                             <div className="space-y-4">
                                 {ticketTypes.map((type, index) => (
-                                    <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-[var(--background)] rounded-2xl border border-[var(--border)] relative group">
-                                        <div className="space-y-1 md:col-span-1">
-                                            <label className="text-[10px] font-black uppercase text-[var(--text-muted)]">Nom</label>
-                                            <input
-                                                required
-                                                value={type.name}
-                                                onChange={(e) => handleTicketChange(index, 'name', e.target.value)}
-                                                placeholder="Simple, VIP, VVIP..."
-                                                className="w-full bg-transparent border-b border-[var(--border)] focus:border-primary transition-all outline-none py-2 font-bold"
-                                            />
-                                        </div>
-                                        <div className="space-y-1 md:col-span-1">
-                                            <label className="text-[10px] font-black uppercase text-[var(--text-muted)]">Prix (FCFA)</label>
-                                            <input
-                                                required
-                                                type="number"
-                                                value={type.price}
-                                                onChange={(e) => handleTicketChange(index, 'price', e.target.value)}
-                                                placeholder="0"
-                                                className="w-full bg-transparent border-b border-[var(--border)] focus:border-primary transition-all outline-none py-2 font-bold"
-                                            />
-                                        </div>
-                                        <div className="space-y-1 md:col-span-1">
-                                            <label className="text-[10px] font-black uppercase text-[var(--text-muted)]">Quantité</label>
-                                            <input
-                                                required
-                                                type="number"
-                                                value={type.quantity_available}
-                                                onChange={(e) => handleTicketChange(index, 'quantity_available', e.target.value)}
-                                                placeholder="100"
-                                                className="w-full bg-transparent border-b border-[var(--border)] focus:border-primary transition-all outline-none py-2 font-bold"
-                                            />
-                                        </div>
-                                        <div className="space-y-1 md:col-span-1 flex items-end justify-between">
-                                            <div className="flex-1 mr-2">
-                                                <label className="text-[10px] font-black uppercase text-[var(--text-muted)]">Bénéfices</label>
-                                                <input
-                                                    value={type.benefits}
-                                                    onChange={(e) => handleTicketChange(index, 'benefits', e.target.value)}
-                                                    placeholder="Consommation offerte..."
-                                                    className="w-full bg-transparent border-b border-[var(--border)] focus:border-primary transition-all outline-none py-2 text-xs"
-                                                />
-                                            </div>
+                                    <div key={index} className="p-4 sm:p-6 bg-[var(--background)] rounded-none border border-[var(--border)] relative group space-y-6">
+                                        <div className="flex justify-between items-center pb-4 border-b border-[var(--border)]/50">
+                                            <span className="text-xs font-black text-primary uppercase tracking-widest">Billet #{index + 1}</span>
                                             {ticketTypes.length > 1 && (
                                                 <button
                                                     type="button"
                                                     onClick={() => removeTicketType(index)}
-                                                    className="p-2 text-danger hover:bg-danger/10 rounded-lg transition-colors"
+                                                    className="p-2 text-danger hover:bg-danger/10 transition-colors rounded-none"
                                                 >
-                                                    <Trash2 size={18} />
+                                                    <Trash2 size={16} />
                                                 </button>
                                             )}
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Nom du Billet</label>
+                                                <input
+                                                    required
+                                                    value={type.name}
+                                                    onChange={(e) => handleTicketChange(index, 'name', e.target.value)}
+                                                    placeholder="Simple, VIP..."
+                                                    className="w-full bg-transparent border-b border-[var(--border)] focus:border-primary transition-all outline-none py-2 font-bold text-sm"
+                                                />
+                                            </div>
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Prix (FCFA)</label>
+                                                <input
+                                                    required
+                                                    type="number"
+                                                    value={type.price}
+                                                    onChange={(e) => handleTicketChange(index, 'price', e.target.value)}
+                                                    placeholder="0"
+                                                    className="w-full bg-transparent border-b border-[var(--border)] focus:border-primary transition-all outline-none py-2 font-bold text-sm"
+                                                />
+                                            </div>
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Quantité Totale</label>
+                                                <input
+                                                    required
+                                                    type="number"
+                                                    value={type.quantity_available}
+                                                    onChange={(e) => handleTicketChange(index, 'quantity_available', e.target.value)}
+                                                    placeholder="100"
+                                                    className="w-full bg-transparent border-b border-[var(--border)] focus:border-primary transition-all outline-none py-2 font-bold text-sm"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Avantages & Inclusions</label>
+                                            <textarea
+                                                value={type.benefits}
+                                                onChange={(e) => handleTicketChange(index, 'benefits', e.target.value)}
+                                                placeholder="Que contient ce billet ?..."
+                                                rows={4}
+                                                className="w-full bg-[var(--background)] border border-[var(--border)] rounded-none p-4 focus:border-primary transition-all outline-none text-xs font-medium resize-none min-h-[100px]"
+                                            />
                                         </div>
                                     </div>
                                 ))}
@@ -394,35 +412,34 @@ const EditEventPage: React.FC = () => {
                         </section>
                     </div>
 
-                    <div className="space-y-8">
+                    <div className="space-y-6">
                         {/* Image Upload */}
-                        <section className="card-surface p-8 space-y-6">
+                        <section className="card-surface p-6 space-y-4">
                             <h3 className="text-xl font-black flex items-center gap-2">
                                 <ImageIcon className="text-primary" /> Affiche
                             </h3>
 
-                            <div className="relative aspect-video rounded-3xl overflow-hidden bg-[var(--background)] border-2 border-dashed border-[var(--border)] group transition-all hover:border-primary/50">
+                            <div className="relative aspect-video rounded-none overflow-hidden bg-[var(--background)] border-2 border-dashed border-[var(--border)] group transition-all hover:border-primary/50">
                                 {imagePreview ? (
                                     <>
                                         <img src={imagePreview} className="w-full h-full object-cover" alt="Preview" />
                                         <button
                                             type="button"
                                             onClick={() => { setImage(null); setImagePreview(null); }}
-                                            className="absolute top-4 right-4 p-2 bg-danger text-white rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-all"
+                                            className="absolute top-4 right-4 p-2 bg-danger text-white rounded-none shadow-lg opacity-0 group-hover:opacity-100 transition-all"
                                         >
                                             <Trash2 size={18} />
                                         </button>
                                     </>
                                 ) : (
                                     <label className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer p-6 text-center">
-                                        <div className="p-4 rounded-2xl bg-primary/10 text-primary mb-4">
+                                        <div className="p-3 sm:p-4 rounded-none bg-primary/10 text-primary mb-4">
                                             <ImageIcon size={32} />
                                         </div>
-                                        <span className="font-bold text-sm">
+                                        <span className="font-bold text-xs sm:text-sm px-4">
                                             {existingImagePath ? "Cliquez pour changer l'affiche" : "Cliquez pour importer l'affiche"}
                                         </span>
-                                        <span className="text-[var(--text-muted)] text-xs mt-2">Recommandé : 1920x1080px (JPEG, PNG, Max 10Mo)</span>
-                                        {existingImagePath && <span className="text-xs text-green-600 mt-1 font-medium">Image actuelle conservée si vide</span>}
+                                        <span className="text-[var(--text-muted)] text-[10px] mt-2">JPEG, PNG (Max 10Mo)</span>
                                         <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
                                     </label>
                                 )}
@@ -485,7 +502,7 @@ const EditEventPage: React.FC = () => {
                             <h3 className="text-xl font-black">Publication</h3>
 
                             <div className="space-y-4">
-                                <label className="flex items-center gap-3 p-4 rounded-2xl border-2 border-[var(--border)] cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all">
+                                <label className="flex items-center gap-3 p-4 rounded-none border-2 border-[var(--border)] cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all">
                                     <input
                                         type="radio"
                                         name="status"
@@ -495,11 +512,11 @@ const EditEventPage: React.FC = () => {
                                         className="w-5 h-5 accent-primary"
                                     />
                                     <div className="flex-1">
-                                        <p className="font-black text-sm">Publier</p>
+                                        <p className="font-black text-sm uppercase tracking-tighter">Publier</p>
                                     </div>
                                 </label>
 
-                                <label className="flex items-center gap-3 p-4 rounded-2xl border-2 border-[var(--border)] cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all">
+                                <label className="flex items-center gap-3 p-4 rounded-none border-2 border-[var(--border)] cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary/5 transition-all">
                                     <input
                                         type="radio"
                                         name="status"
@@ -509,7 +526,7 @@ const EditEventPage: React.FC = () => {
                                         className="w-5 h-5 accent-primary"
                                     />
                                     <div className="flex-1">
-                                        <p className="font-black text-sm">Brouillon</p>
+                                        <p className="font-black text-sm uppercase tracking-tighter">Brouillon</p>
                                     </div>
                                 </label>
                             </div>

@@ -40,9 +40,9 @@ const PartnersSection: React.FC = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5, scale: 1.02 }}
-                            className="w-full max-w-[280px] card-surface p-6 flex flex-col items-center text-center gap-4 group hover:border-primary/50 transition-all border-2 border-transparent shadow-lg"
+                            className="w-full max-w-[280px] card-surface p-6 flex flex-col items-center text-center gap-4 group hover:border-primary/50 transition-all border-2 border-transparent shadow-lg rounded-none"
                         >
-                            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-colors">
+                            <div className="w-14 h-14 rounded-none bg-primary/10 flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-colors">
                                 {partner.name[0]}
                             </div>
                             <div className="space-y-1">
