@@ -66,24 +66,28 @@ const StepCard: React.FC<{
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="flex gap-8 mb-16 relative group"
+        className="flex flex-col sm:flex-row gap-6 sm:gap-12 mb-10 sm:mb-20 relative group"
     >
-        <div className="flex-shrink-0 relative">
-            <div className="w-16 h-16 bg-[var(--text)] text-[var(--background)] flex items-center justify-center font-black text-3xl shadow-2xl z-10 relative">
+        <div className="flex-shrink-0 relative flex sm:block items-center">
+            <div className="w-14 h-14 sm:w-20 sm:h-20 bg-[var(--text)] text-[var(--background)] flex items-center justify-center font-black text-2xl sm:text-4xl shadow-2xl z-10 relative">
                 {number}
             </div>
-            {/* Connecting line between steps */}
-            <div className="absolute top-16 bottom-[-64px] left-1/2 w-px bg-[var(--border)] group-last:hidden" />
+            {/* Connecting line between steps - hidden on very small screens */}
+            <div className="absolute top-14 sm:top-20 bottom-[-40px] sm:bottom-[-80px] left-7 sm:left-10 w-px bg-[var(--border)] hidden sm:block group-last:hidden" />
+            
+            {/* Mobile title (only visible if title is short or needed) */}
+            <div className="sm:hidden ml-4">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Étape</h4>
+            </div>
         </div>
-        <div className="flex-1 bg-[var(--surface)] p-10 border border-[var(--border)] hover:border-primary transition-all shadow-xl group-hover:shadow-primary/5">
+        <div className="flex-1 bg-[var(--surface)] p-6 sm:p-12 border border-[var(--border)] hover:border-primary transition-all shadow-xl group-hover:shadow-primary/5">
             <div className="flex items-center gap-4 mb-6">
-                {icon && <div className="p-3 bg-primary/10 text-primary">{icon}</div>}
-                <h3 className="text-2xl font-black uppercase tracking-tighter m-0 group-hover:text-primary transition-colors">
-
+                {icon && <div className="p-3 bg-primary/10 text-primary scale-90 sm:scale-100">{icon}</div>}
+                <h3 className="text-xl sm:text-3xl font-black uppercase tracking-tighter m-0 group-hover:text-primary transition-colors leading-[0.9]">
                     {title}
                 </h3>
             </div>
-            <div className="text-lg text-[var(--text-muted)] font-medium leading-relaxed prose prose-invert max-w-none">
+            <div className="text-sm sm:text-lg text-[var(--text-muted)] font-medium leading-relaxed prose prose-invert max-w-none">
                 {children}
             </div>
         </div>
@@ -110,7 +114,7 @@ const InfoPanel: React.FC<{
     };
 
     return (
-        <div className={`p-10 border-l-8 my-12 relative overflow-hidden ${theme[type]}`}>
+        <div className={`p-6 sm:p-10 border-l-8 my-8 sm:my-12 relative overflow-hidden ${theme[type]}`}>
             <div className="absolute -top-4 -right-4 w-24 h-24 opacity-5 pointer-events-none">
                 {icons[type]}
             </div>
