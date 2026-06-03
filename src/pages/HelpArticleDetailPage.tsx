@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { 
-    ArrowLeft, 
-    Share2, 
-    Printer, 
-    ThumbsUp, 
-    ThumbsDown, 
-    MessageCircle, 
-    CheckCircle2, 
-    AlertCircle, 
-    Info, 
+import {
+    ArrowLeft,
+    Share2,
+    Printer,
+    ThumbsUp,
+    ThumbsDown,
+    MessageCircle,
+    CheckCircle2,
+    AlertCircle,
+    Info,
     ArrowRight,
     Smartphone,
     CreditCard,
@@ -56,13 +56,13 @@ import api from '../services/api';
  * A bold card for displaying a step in a process.
  * Inspired by the 'GuidePage' aesthetic.
  */
-const StepCard: React.FC<{ 
-    number: number, 
-    title: string, 
-    children: React.ReactNode, 
-    icon?: React.ReactNode 
+const StepCard: React.FC<{
+    number: number,
+    title: string,
+    children: React.ReactNode,
+    icon?: React.ReactNode
 }> = ({ number, title, children, icon }) => (
-    <motion.div 
+    <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -93,10 +93,10 @@ const StepCard: React.FC<{
 /**
  * A panel for important messages, warnings or tips.
  */
-const InfoPanel: React.FC<{ 
-    type?: 'info' | 'warning' | 'success', 
-    title: string, 
-    children: React.ReactNode 
+const InfoPanel: React.FC<{
+    type?: 'info' | 'warning' | 'success',
+    title: string,
+    children: React.ReactNode
 }> = ({ type = 'info', title, children }) => {
     const theme = {
         info: "bg-blue-500/5 border-blue-500/20 text-blue-400",
@@ -133,7 +133,7 @@ const FAQItem: React.FC<{ question: string, answer: string }> = ({ question, ans
     const [isOpen, setIsOpen] = useState(false);
     return (
         <div className="border-b border-[var(--border)] mb-2 overflow-hidden last:border-b-0">
-            <button 
+            <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center justify-between py-6 text-left hover:text-primary transition-colors"
             >
@@ -144,7 +144,7 @@ const FAQItem: React.FC<{ question: string, answer: string }> = ({ question, ans
             </button>
             <AnimatePresence>
                 {isOpen && (
-                    <motion.div 
+                    <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -163,22 +163,20 @@ const FAQItem: React.FC<{ question: string, answer: string }> = ({ question, ans
 /**
  * Large action cards for navigation/CTAs.
  */
-const ActionLink: React.FC<{ 
-    title: string, 
-    description: string, 
-    to: string, 
-    icon: React.ReactNode, 
-    variant?: 'glow' | 'standard' 
+const ActionLink: React.FC<{
+    title: string,
+    description: string,
+    to: string,
+    icon: React.ReactNode,
+    variant?: 'glow' | 'standard'
 }> = ({ title, description, to, icon, variant = 'standard' }) => (
     <Link to={to} className="block group">
-        <div className={`p-10 transition-all flex items-center gap-8 border ${
-            variant === 'glow' 
-            ? 'bg-primary border-primary shadow-[0_20px_50px_-20px_rgba(217,70,239,0.5)]' 
+        <div className={`p-10 transition-all flex items-center gap-8 border ${variant === 'glow'
+            ? 'bg-primary border-primary shadow-[0_20px_50px_-20px_rgba(217,70,239,0.5)]'
             : 'bg-[var(--surface)] border-[var(--border)] hover:border-primary'
-        }`}>
-            <div className={`w-20 h-20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform ${
-                variant === 'glow' ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'
             }`}>
+            <div className={`w-20 h-20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform ${variant === 'glow' ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'
+                }`}>
                 {icon}
             </div>
             <div className="flex-1">
@@ -232,38 +230,38 @@ const ARTICLE_CONTENT: Record<string, {
             <div className="space-y-10">
                 <p className="text-lg text-[var(--text-muted)] leading-relaxed border-l-4 border-primary pl-6">
 
-                    Acheter un billet sur Evenia est conçu pour être aussi simple que d'envoyer un message. 
+                    Acheter un billet sur Evenia est conçu pour être aussi simple que d'envoyer un message.
                     Notre système est optimisé pour les réseaux mobiles capricieux.
                 </p>
 
                 <StepCard number={1} title="Exploration Interactive" icon={<Search size={32} />}>
-                    Parcourez notre catalogue sur l'accueil. Utilisez les catégories (**Sport**, **Concerts**, **Business**) 
+                    Parcourez notre catalogue sur l'accueil. Utilisez les catégories (**Sport**, **Concerts**, **Business**)
                     pour isoler les événements qui vous intéressent. Chaque événement affiche son lieu et sa date de manière claire.
                 </StepCard>
 
                 <StepCard number={2} title="Le Panier Intelligent" icon={<CardIcon size={32} />}>
-                    Choisissez votre catégorie de billet. Sur Evenia, un billet peut être **Flash**, **VIP**, ou **Premium**. 
+                    Choisissez votre catégorie de billet. Sur Evenia, un billet peut être **Flash**, **VIP**, ou **Premium**.
                     Vérifiez les avantages inclus (boissons, placement, accès coulisses) avant de valider.
                 </StepCard>
 
                 <ProTip>
-                    Si vous achetez pour un groupe, vous pouvez sélectionner plusieurs billets d'un coup. 
+                    Si vous achetez pour un groupe, vous pouvez sélectionner plusieurs billets d'un coup.
                     Vous recevrez un QR code distinct pour chaque personne.
                 </ProTip>
 
                 <StepCard number={3} title="Paiement Mobile Money" icon={<Smartphone size={32} />}>
-                    C'est l'étape cruciale. Entrez votre numéro de téléphone. 
-                    Vous recevrez une **notification Push** sur votre téléphone. Entrez votre code secret Orange ou MTN. 
+                    C'est l'étape cruciale. Entrez votre numéro de téléphone.
+                    Vous recevrez une **notification Push** sur votre téléphone. Entrez votre code secret Orange ou MTN.
                     **Ne fermez pas la page Evenia tant que la confirmation ne s'affiche pas.**
                 </StepCard>
 
                 <InfoPanel title="Sécurité des fonds" type="success">
-                    Toutes les transactions sont chiffrées en 256-bits. Evenia ne voit jamais et ne stocke jamais 
+                    Toutes les transactions sont sécurisées. Evenia ne voit jamais et ne stocke jamais
                     votre code secret Mobile Money.
                 </InfoPanel>
 
                 <StepCard number={4} title="Récupération Immédiate" icon={<QrCode size={32} />}>
-                    Une fois payé, le billet apparaît dans **Mes Billets**. Un QR code unique est généré. 
+                    Une fois payé, le billet apparaît dans **Mes Billets**. Un QR code unique est généré.
                     Vous pouvez le télécharger ou simplement le présenter à l'entrée via votre téléphone.
                 </StepCard>
 
@@ -291,22 +289,22 @@ const ARTICLE_CONTENT: Record<string, {
                 </p>
 
                 <StepCard number={1} title="Vérifiez vos Spams / Courrier Indésirable" icon={<Mail size={32} />}>
-                    Les serveurs de messagerie (Gmail, Outlook) classent parfois nos emails automatiques en spam. 
+                    Les serveurs de messagerie (Gmail, Outlook) classent parfois nos emails automatiques en spam.
                     Recherchez un email provenant de **noreply@evenia.ticket**.
                 </StepCard>
 
                 <StepCard number={2} title="Le Salut par le Dashboard" icon={<LayoutDashboard size={32} />}>
-                    L'email n'est qu'une copie de sauvegarde. Votre vrai ticket est dans votre compte. 
+                    L'email n'est qu'une copie de sauvegarde. Votre vrai ticket est dans votre compte.
                     Connectez-vous et allez dans **Mes Billets**. Si le QR code s'affiche, vous êtes prêt pour l'événement !
                 </StepCard>
 
                 <InfoPanel title="Erreur de frappe ?" type="warning">
-                    Si vous avez fait une erreur dans votre adresse email lors de l'achat, l'email ne pourra jamais arriver. 
+                    Si vous avez fait une erreur dans votre adresse email lors de l'achat, l'email ne pourra jamais arriver.
                     Dans ce cas, votre ticket reste lié à votre compte utilisateur (si vous étiez connecté) ou à votre numéro de téléphone.
                 </InfoPanel>
 
                 <ProTip>
-                    Prenez toujours une capture d'écran de votre QR Code dès qu'il s'affiche. 
+                    Prenez toujours une capture d'écran de votre QR Code dès qu'il s'affiche.
                     Cela vous évite de dépendre d'Internet le jour J devant l'entrée du stade.
                 </ProTip>
 
@@ -349,13 +347,13 @@ const ARTICLE_CONTENT: Record<string, {
                 <div className="p-12 bg-primary/5 border border-primary/20">
                     <h3 className="text-2xl font-black uppercase mb-8"><CardIcon size={24} className="inline mr-3" /> Cartes Bancaires (Bientôt)</h3>
                     <p className="text-lg font-medium text-[var(--text-muted)]">
-                        Nous travaillons sur l'intégration de **Visa** et **Mastercard** pour permettre aux fans de la diaspora 
+                        Nous travaillons sur l'intégration de **Visa** et **Mastercard** pour permettre aux fans de la diaspora
                         d'acheter des billets pour leurs proches restés au pays.
                     </p>
                 </div>
 
                 <InfoPanel title="Frais de service" type="info">
-                    Evenia applique des frais de maintenance minimes (en général 100-250 CFA par billet) 
+                    Evenia applique des frais de maintenance minimes (en général 100-250 CFA selon le type de billet)
                     pour garantir la sécurité et la rapidité de la plateforme. Les frais opérateurs standard s'appliquent.
                 </InfoPanel>
             </div>
@@ -386,7 +384,7 @@ const ARTICLE_CONTENT: Record<string, {
                         <div className="absolute top-0 left-0 w-full h-1 bg-red-500" />
                         <h3 className="text-xl font-black mb-4 flex items-center gap-2"><Clock size={20} /> Expiration</h3>
                         <p className="text-sm text-[var(--text-muted)] font-medium leading-relaxed">
-                            Les opérateurs Orange et MTN ferment les sessions de paiement après **60 secondes**. 
+                            Les opérateurs Orange et MTN ferment les sessions de paiement après **60 secondes**.
                             Si vous ne validez pas votre code secret assez vite, le paiement est annulé par sécurité.
                         </p>
                     </div>
@@ -394,24 +392,24 @@ const ARTICLE_CONTENT: Record<string, {
                         <div className="absolute top-0 left-0 w-full h-1 bg-red-500" />
                         <h3 className="text-xl font-black mb-4 flex items-center gap-2"><Zap size={20} /> Congestion réseau</h3>
                         <p className="text-sm text-[var(--text-muted)] font-medium leading-relaxed">
-                            Lors des grands soirs de match, les réseaux mobiles peuvent saturer. 
+                            Lors des grands soirs de match, les réseaux mobiles peuvent saturer.
                             Attendez 5 minutes et retentez. Ne cliquez pas plusieurs fois sur "Acheter".
                         </p>
                     </div>
                 </div>
 
                 <StepCard number={1} title="Vérifiez votre Solde" icon={<Wallet size={32} />}>
-                    C'est la cause n°1 d'échec. Rappelez-vous : le prix du billet est affiché en Net. 
+                    C'est la cause n°1 d'échec. Rappelez-vous : le prix du billet est affiché en Net.
                     L'opérateur prélève souvent des frais de transaction (environ 1-2%). Assurez-vous d'avoir une marge sur votre compte.
                 </StepCard>
 
                 <InfoPanel title="Le cas du 'Débit Fantôme'" type="warning">
-                    Si votre compte a été débité mais que Evenia indique "Échec", cela signifie que l'opérateur a mis trop de temps à nous répondre. 
+                    Si votre compte a été débité mais que Evenia indique "Échec", cela signifie que l'opérateur a mis trop de temps à nous répondre.
                     **Ne retentez pas de paiement immédiatement.** Envoyez l'ID de transaction (Sms reçu) à support@evenia.ticket.
                 </InfoPanel>
 
                 <StepCard number={2} title="Retentez la transaction" icon={<Activity size={32} />}>
-                    Une fois les vérifications faites, relancez l'achat. Gardez votre téléphone mobile à la main et déverrouillé. 
+                    Une fois les vérifications faites, relancez l'achat. Gardez votre téléphone mobile à la main et déverrouillé.
                     La fenêtre de saisie du code apparaît généralement en moins de 10 secondes.
                 </StepCard>
 
@@ -439,7 +437,7 @@ const ARTICLE_CONTENT: Record<string, {
                     <div className="space-y-6">
                         <h3 className="text-3xl font-black uppercase tracking-tighter">Événement annulé</h3>
                         <p className="text-lg text-[var(--text-muted)] font-medium leading-relaxed">
-                            Si l'organisateur annule l'événement, le remboursement est **automatique**. 
+                            Si l'organisateur annule l'événement, le remboursement est **automatique**.
                             Vous n'avez aucune démarche à faire. Les fonds retournent sur le numéro Mobile Money utilisé pour l'achat.
                         </p>
                     </div>
@@ -447,19 +445,19 @@ const ARTICLE_CONTENT: Record<string, {
                         <h3 className="text-2xl font-black uppercase tracking-tighter">Report de date</h3>
 
                         <p className="text-lg text-[var(--text-muted)] font-medium leading-relaxed">
-                            Votre billet reste valide pour la nouvelle date. Si celle-ci ne vous convient pas, 
+                            Votre billet reste valide pour la nouvelle date. Si celle-ci ne vous convient pas,
                             vous avez **48 heures** après l'annonce pour demander un remboursement manuel via le support.
                         </p>
                     </div>
                 </div>
 
                 <InfoPanel title="Délai de traitement" type="info">
-                    Les remboursements Mobile Money prennent généralement entre **2 et 7 jours ouvrés** pour apparaître sur votre solde 
+                    Les remboursements Mobile Money prennent généralement entre **2 et 7 jours ouvrés** pour apparaître sur votre solde
                     selon les délais inter-bancaires et opérateurs.
                 </InfoPanel>
 
                 <StepCard number={1} title="Comment demander ?">
-                    Envoyez un email à **contact@evenia.ticket** avec trois éléments :
+                    Envoyez un email à **anngaraevenia@gmail.com** avec trois éléments :
                     <ul className="mt-4 space-y-2 list-disc pl-6 font-bold text-sm">
                         <li>ID de commande Evenia</li>
                         <li>Capture d'écran du SMS de débit initial</li>
@@ -486,12 +484,12 @@ const ARTICLE_CONTENT: Record<string, {
         component: () => (
             <div className="space-y-10">
                 <p className="text-xl font-medium leading-relaxed text-[var(--text-muted)]">
-                    Evenia Entreprise est la plateforme n°1 au Cameroun pour les organisateurs ambitieux. 
+                    Evenia Entreprise est la plateforme n°1 au Cameroun pour les organisateurs ambitieux.
                     Voici le chemin de la réussite.
                 </p>
 
                 <StepCard number={1} title="Visuels percutants" icon={<Eye size={32} />}>
-                    Téléchargez une affiche en haute résolution (16:9 recommandé). 
+                    Téléchargez une affiche en haute résolution (16:9 recommandé).
                     Une image claire et pro multiplie vos ventes par 3. Évitez les textes trop petits sur l'affiche.
                 </StepCard>
 
@@ -505,12 +503,12 @@ const ARTICLE_CONTENT: Record<string, {
                 </StepCard>
 
                 <ProTip>
-                    Activez les ventes "Early Bird" (tarif réduit pour les premiers acheteurs). 
-                    Cela crée un sentiment d'urgence et booste votre cash-flow dès le lancement.
+                    Choisissez des images au format **rectangulaire** (type écran d'ordinateur 16:9) pour un affichage optimal.
+                    Vous pouvez ajouter jusqu'à **5 images** de haute qualité et soignez votre **description** : plus elle est détaillée, plus les clients seront rassurés.
                 </ProTip>
 
                 <StepCard number={3} title="Localisation & Accès" icon={<Globe size={32} />}>
-                    Renseignez le lieu de manière précise. Notre carte interactive guidera vos clients 
+                    Renseignez le lieu de manière précise. Notre carte interactive guidera vos clients
                     via GPS directement vers l'entrée du stade ou de la salle.
                 </StepCard>
 
@@ -536,18 +534,18 @@ const ARTICLE_CONTENT: Record<string, {
                 </p>
 
                 <StepCard number={1} title="Créer un compte Agent" icon={<UserPlus size={32} />}>
-                    Dans votre dashboard organisateur, allez dans **Gestion Staff**. 
-                    Créez un profil pour chaque agent (Nom, Email). Ils recevront un code de validation. 
-                    **Important : Ils n'ont pas accès à vos gains ni à vos statistiques.**
+                    Dans votre dashboard organisateur, allez dans **Gestion Staff**.
+                    Créez un profil pour chaque agent (Nom, Email, code Unique et consigne de scan).
+                    **Important : Ils n'ont pas accès à vos gains ni à vos statistiques.** Vous pouvez les ajouter ou les supprimer à tout moment.
                 </StepCard>
 
                 <StepCard number={2} title="L'App de Scan" icon={<Smartphone size={32} />}>
-                    Demandez à vos agents de télécharger l'application mobile **Evenia Scanner** (ou d'utiliser le mode scanner sur leur smartphone). 
+                    Demandez à vos agents de télécharger l'application mobile **Evenia Scanner** (ou d'utiliser le mode scanner sur leur smartphone).
                     Ils scannent le QR Code des billets clients en 0.5 seconde.
                 </StepCard>
 
                 <InfoPanel title="Synchronisation Live" type="success">
-                    Chaque scan est transmis en temps réel à vos statistiques. 
+                    Chaque scan est transmis en temps réel à vos statistiques.
                     Vous savez exactement combien de personnes sont entrées à 15h, 16h, 17h.
                 </InfoPanel>
 
@@ -592,18 +590,17 @@ const ARTICLE_CONTENT: Record<string, {
                 </div>
 
                 <StepCard number={1} title="Exportation PDF/CSV" icon={<Download size={32} />}>
-                    Générez vos rapports de fin d'événement en un clic. Utile pour la comptabilité, 
+                    Générez vos rapports de fin d'événement en un clic. Utile pour la comptabilité,
                     les sponsors ou vos archives personnelles. Tout est archivé à vie sur Evenia.
                 </StepCard>
 
                 <StepCard number={2} title="Retrait des Fonds (Payout)" icon={<Zap size={32} />}>
-                    Dès que vos ventes atteignent le palier, vous pouvez demander un retrait. 
-                    Validation manuelle par nos équipes de sécurité sous **24h**. 
-                    Réception sur votre Orange Money ou MTN MoMo.
+                    Dès que vos ventes atteignent le palier, vous pouvez demander un retrait.
+                    Validation automatique et transfert immédiat sur votre Orange Money ou MTN MoMo.
                 </StepCard>
 
                 <ProTip>
-                    Regardez vos pics de vente. Souvent, ils correspondent à vos publications sur TikTok ou Instagram. 
+                    Regardez vos pics de vente. Souvent, ils correspondent à vos publications sur TikTok ou Instagram.
                     Utilisez cela pour affiner vos futures annonces publicitaires.
                 </ProTip>
             </div>
@@ -625,10 +622,10 @@ const ARTICLE_CONTENT: Record<string, {
                     <div className="relative z-10 space-y-8">
                         <h3 className="text-4xl font-black uppercase tracking-tighter leading-none">Partenariats Nationaux</h3>
                         <p className="text-xl text-[var(--text-muted)] font-medium leading-relaxed">
-                            Evenia Ticket est ouvert aux collaborations avec les ministères, les fédérations sportives nationales 
+                            Evenia Ticket est ouvert aux collaborations avec les ministères, les fédérations sportives nationales
                             et les grands groupes média pour sécuriser la billetterie à l'échelle nationale.
                         </p>
-                        
+
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-10">
                             <div className="bg-[var(--background)] p-8 border border-[var(--border)]">
                                 <Mail className="text-primary mb-4" size={32} />
@@ -645,10 +642,10 @@ const ARTICLE_CONTENT: Record<string, {
                 </div>
 
                 <div className="p-12 border border-dashed border-[var(--border)]">
-                    <h4 className="text-xl font-black uppercase mb-6 flex items-center gap-3"><Info size={24} className="text-primary"/> Informations administratives</h4>
+                    <h4 className="text-xl font-black uppercase mb-6 flex items-center gap-3"><Info size={24} className="text-primary" /> Informations administratives</h4>
                     <p className="text-sm text-[var(--text-muted)] leading-relaxed font-bold">
                         Evenia Ticket est une marque déposée de **DeveloppeursApp SARL**, leader camerounais dans le développement de plateformes transactionnelles sécurisées.
-                        Notre siège social est situé à Douala, Cameroun.
+                        Notre siège social est situé à Yaoundé, Cameroun.
                     </p>
                 </div>
             </div>
@@ -666,19 +663,13 @@ const ARTICLE_CONTENT: Record<string, {
         component: () => (
             <div className="space-y-10">
                 <StepCard number={1} title="Accès aux réglages" icon={<Settings size={32} />}>
-                    Connectez-vous à votre profil. Cliquez sur l'icône **Paramètres** (engrenage) en haut à droite de votre tableau de bord.
+                    Connectez-vous à votre profil. Cliquez sur l'icône **Paramètres** (engrenage) en haut à droite ou en bas à gauche du sidebar de votre tableau de bord.
                 </StepCard>
 
                 <StepCard number={2} title="Modification sécurisée" icon={<Lock size={32} />}>
-                    Dans l'onglet **Sécurité**, entrez votre mot de passe actuel, puis le nouveau. 
+                    Dans l'onglet **Sécurité**, entrez votre mot de passe actuel, puis le nouveau.
                     Nous recommandons au moins 12 caractères avec des symboles.
                 </StepCard>
-
-                <InfoPanel title="Double Authentification (2FA)" type="success">
-                    Pour une sécurité maximale, nous vous conseillons d'activer la validation par SMS. 
-                    Même si quelqu'un vole votre mot de passe, il ne pourra pas accéder à vos billets sans votre téléphone.
-                </InfoPanel>
-
                 <div className="mt-16">
                     <ActionLink title="Changer maintenant" description="Aller vers mon profil" to="/profile" icon={<UserPlus size={30} />} variant="glow" />
                 </div>
@@ -690,27 +681,29 @@ const ARTICLE_CONTENT: Record<string, {
     "supprimer-compte": {
         title: "Clôturer mon compte Evenia",
         category: "Mon Compte",
-        intro: "Nous sommes désolés de vous voir partir. Voici la procédure pour supprimer vos données.",
+        intro: "Nous sommes désolés de vous voir partir. Voici comment supprimer vos données de manière sécurisée et autonome.",
         related: [],
         component: () => (
             <div className="space-y-10">
                 <div className="bg-red-500/10 border border-red-500/20 p-10">
                     <h4 className="text-xl font-black uppercase text-red-500 mb-4">Attention : Action Irréversible</h4>
                     <p className="text-sm font-medium text-[var(--text-muted)] leading-relaxed">
-                        La suppression de votre compte entraînera la perte définitive de tout votre historique d'achat 
-                        et de tous vos billets actifs. Aucun remboursement ne sera possible après cette action.
+                        La suppression de votre compte entraînera la perte définitive de tout votre historique d'achat
+                        et de tous vos billets actifs. Assurez-vous d'avoir utilisé tous vos tickets avant de procéder.
                     </p>
                 </div>
 
-                <StepCard number={1} title="Demande Formelle" icon={<Mail size={32} />}>
-                    Pour des raisons de sécurité (pour éviter qu'un pirate ne supprime votre compte), 
-                    vous devez envoyer un email à **privacy@evenia.ticket** depuis l'adresse liée au compte.
+                <StepCard number={1} title="Accès aux paramètres" icon={<Settings size={32} />}>
+                    Connectez-vous et rendez-vous dans votre **Profil**. Allez dans l'onglet **Paramètres** ou **Sécurité**.
                 </StepCard>
 
-                <StepCard number={2} title="Délai de réflexion" icon={<Clock size={32} />}>
-                    Votre compte sera désactivé pendant 30 jours (période de grâce). 
-                    Passé ce délai, toutes vos données seront anonymisées conformément au RGPD.
+                <StepCard number={2} title="Confirmation par mot de passe" icon={<Lock size={32} />}>
+                    Cliquez sur le bouton **Supprimer mon compte**. Pour valider l'action, vous devrez **saisir votre mot de passe actuel** afin de confirmer que vous êtes bien le propriétaire du compte.
                 </StepCard>
+
+                <InfoPanel title="Délai de traitement" type="info">
+                    Une fois le mot de passe validé, votre compte est désactivé immédiatement. Vos données seront définitivement supprimées de nos serveurs sous 30 jours, conformément à notre politique de confidentialité.
+                </InfoPanel>
             </div>
         )
     },
@@ -730,17 +723,17 @@ const ARTICLE_CONTENT: Record<string, {
                 </p>
 
                 <StepCard number={1} title="Capturez l'erreur" icon={<Smartphone size={32} />}>
-                    Prenez une capture d'écran du message d'erreur ou du comportement anormal. 
+                    Prenez une capture d'écran du message d'erreur ou du comportement anormal.
                     Notez l'heure précise de l'incident.
                 </StepCard>
 
                 <StepCard number={2} title="Canal WhatsApp Priority" icon={<MessageCircle size={32} />}>
-                    Envoyez vos captures directement à notre équipe technique via le bouton WhatsApp en bas de page. 
+                    Envoyez vos captures directement à notre équipe technique via le bouton WhatsApp en bas de page.
                     Précisez votre modèle de téléphone (ex: iPhone 13, Samsung S22).
                 </StepCard>
 
                 <InfoPanel title="Programme Bug Bounty" type="info">
-                    Si vous découvrez une faille de sécurité majeure,Evenia vous offre des billets VIP gratuits 
+                    Si vous découvrez une faille de sécurité majeure,Evenia vous offre des billets VIP gratuits
                     pour l'événement de votre choix.
                 </InfoPanel>
             </div>
@@ -751,7 +744,7 @@ const ARTICLE_CONTENT: Record<string, {
     "retirer-fonds": {
         title: "Comment retirer mes gains ?",
         category: "Guide Organisateur",
-        intro: "Bravo pour vos ventes ! Voici comment transférer votre argent vers votre compte Mobile Money.",
+        intro: "Bravo pour vos ventes ! L'argent collecté sur Evenia Ticket est disponible immédiatement pour un retrait vers votre compte Mobile Money.",
         related: [
             { title: "Analyses & Stats", id: "stats-ventes" }
         ],
@@ -760,29 +753,30 @@ const ARTICLE_CONTENT: Record<string, {
                 <div className="p-12 bg-emerald-500/5 border border-emerald-500/20 flex gap-8 items-center">
                     <Wallet size={64} className="text-emerald-500" />
                     <div>
-                        <h4 className="text-2xl font-black uppercase text-emerald-500">Disponibilité des fonds</h4>
-                        <p className="text-sm font-bold text-[var(--text-muted)]">Les retraits sont possibles dès que votre solde dépasse 5 000 CFA.</p>
+                        <h4 className="text-2xl font-black uppercase text-emerald-500">Paiement Immédiat</h4>
+                        <p className="text-sm font-bold text-[var(--text-muted)]">Les retraits sont possibles dès que votre solde atteint 500 CFA.</p>
                     </div>
                 </div>
 
-                <StepCard number={1} title="Paramétrer son numéro" icon={<Settings size={32} />}>
-                    Dans votre Dashboard Organisateur, allez dans **Configuration Paiement**. 
-                    Enregistrez votre numéro Orange Money ou MTN MoMo principal.
+                <StepCard number={1} title="Accès au Portefeuille" icon={<Settings size={32} />}>
+                    Connectez-vous à votre compte Organisateur. Dans le **Sidebar** (menu latéral gauche), cliquez sur l'onglet **Mon Portefeuille**.
                 </StepCard>
 
-                <StepCard number={2} title="Demande de Payout" icon={<Zap size={32} />}>
-                    Cliquez sur **Retirer mes fonds**. Choisissez le montant. 
-                    Nos équipes vérifient la conformité des ventes et valident le transfert.
+                <StepCard number={2} title="Demande de retrait" icon={<Zap size={32} />}>
+                    Une fois sur votre portefeuille, cliquez sur le bouton **Demander un retrait** situé tout en haut de la page.
                 </StepCard>
 
-                <InfoPanel title="Délais de réception" type="info">
-                    Les retraits sont traités par vagues. Vous recevez vos fonds sous **24h à 48h** maximum. 
-                    Un SMS de confirmation vous est envoyé par votre opérateur.
+                <StepCard number={3} title="Validation directe" icon={<CheckCircle2 size={32} />}>
+                    Saisissez le montant souhaité et vos informations de réception (Orange Money ou MTN MoMo).
+                    Validez pour retirer votre argent **immédiatement**.
+                </StepCard>
+
+                <InfoPanel title="Sécurité des transactions" type="info">
+                    Même si le retrait est immédiat, nos systèmes de sécurité effectuent un contrôle automatique en arrière-plan pour garantir l'intégrité de vos fonds.
                 </InfoPanel>
 
                 <ProTip>
-                    Pour les gros événements (&gt; 1 000 000 CFA), nous conseillons de faire des retraits partiels 
-                    tout au long de la période de vente pour mieux gérer votre trésorerie.
+                    Assurez-vous que le numéro de téléphone saisi est correct et actif pour éviter tout échec de transaction lors du transfert vers vos comptes Mobile Money.
                 </ProTip>
             </div>
         )
@@ -799,6 +793,7 @@ const HelpArticleDetailPage: React.FC = () => {
     const [scrolled, setScrolled] = useState(false);
     const [feedbackStatus, setFeedbackStatus] = useState<'idle' | 'yes' | 'no' | 'submitted' | 'submitting'>('idle');
     const [feedbackComment, setFeedbackComment] = useState('');
+    const [showCopyToast, setShowCopyToast] = useState(false);
 
     const handleFeedback = async (isHelpful: boolean, comment?: string) => {
         setFeedbackStatus('submitting');
@@ -847,17 +842,17 @@ const HelpArticleDetailPage: React.FC = () => {
     return (
         <>
             <div className="min-h-screen bg-[var(--background)] py-20 pb-40 text-[var(--text)] selection:bg-primary selection:text-white">
-                
+
                 {/* PROGRESS BAR */}
-                <motion.div 
-                    className="fixed top-0 left-0 h-1 bg-primary z-50 origin-left" 
+                <motion.div
+                    className="fixed top-0 left-0 h-1 bg-primary z-50 origin-left"
                     style={{ scaleX: 0 }} /* Would normally use useScroll from framer */
                 />
 
                 <div className="container mx-auto px-6 max-w-6xl">
-                    
+
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
-                        
+
                         {/* LEFT SIDEBAR (STICKY) - Inspired by GuidePage */}
                         <aside className="lg:col-span-3 hidden lg:block">
                             <div className="sticky top-32 space-y-16">
@@ -890,7 +885,8 @@ const HelpArticleDetailPage: React.FC = () => {
                                     <button className="w-10 h-10 bg-[var(--surface)] text-[var(--text-muted)] flex items-center justify-center border border-[var(--border)] hover:text-primary transition-all rounded-full" onClick={() => window.print()}><Printer size={16} /></button>
                                     <button className="w-10 h-10 bg-[var(--surface)] text-[var(--text-muted)] flex items-center justify-center border border-[var(--border)] hover:text-primary transition-all rounded-full" onClick={() => {
                                         navigator.clipboard.writeText(window.location.href);
-                                        alert("Lien copié !");
+                                        setShowCopyToast(true);
+                                        setTimeout(() => setShowCopyToast(false), 3000);
                                     }}><Copy size={16} /></button>
                                 </div>
                             </div>
@@ -898,7 +894,7 @@ const HelpArticleDetailPage: React.FC = () => {
 
                         {/* MAIN CONTENT AREA */}
                         <main className="lg:col-span-9" id="article-main">
-                            
+
                             {/* MOBILE ACTIONS */}
                             <div className="lg:hidden flex items-center justify-between mb-16 pb-8 border-b border-[var(--border)]">
                                 <Link to="/help-center" className="text-[var(--text-muted)] font-black uppercase text-[10px] flex items-center gap-3">
@@ -911,7 +907,7 @@ const HelpArticleDetailPage: React.FC = () => {
                             </div>
 
                             {/* ARTICLE HEADER SECTION */}
-                            <motion.section 
+                            <motion.section
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 className="mb-24"
@@ -937,7 +933,7 @@ const HelpArticleDetailPage: React.FC = () => {
                             </motion.section>
 
                             {/* DYNAMIC ARTICLE BODY */}
-                            <motion.section 
+                            <motion.section
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.2 }}
@@ -956,7 +952,7 @@ const HelpArticleDetailPage: React.FC = () => {
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                                         {article.related.map((rel) => (
-                                            <ActionLink 
+                                            <ActionLink
                                                 key={rel.id}
                                                 title={rel.title}
                                                 description="Consulter ce guide pratique"
@@ -973,7 +969,7 @@ const HelpArticleDetailPage: React.FC = () => {
                                 <div className="bg-[var(--surface)] p-16 text-center md:text-left space-y-8 min-h-[400px] flex flex-col justify-center">
                                     <AnimatePresence mode="wait">
                                         {feedbackStatus === 'idle' && (
-                                            <motion.div 
+                                            <motion.div
                                                 key="idle"
                                                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                                                 className="space-y-8"
@@ -983,13 +979,13 @@ const HelpArticleDetailPage: React.FC = () => {
                                                 </div>
                                                 <h4 className="text-3xl font-black uppercase tracking-tighter">Article Utile ?</h4>
                                                 <div className="flex flex-wrap items-center gap-4 justify-center md:justify-start">
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleFeedback(true)}
                                                         className="flex items-center gap-4 px-12 py-4 bg-primary text-white font-black uppercase text-xs tracking-widest hover:scale-105 transition-all shadow-xl cursor-pointer"
                                                     >
                                                         <ThumbsUp size={18} /> Oui
                                                     </button>
-                                                    <button 
+                                                    <button
                                                         onClick={() => setFeedbackStatus('no')}
                                                         className="flex items-center gap-4 px-12 py-4 bg-[var(--background)] border border-[var(--border)] hover:border-red-500 hover:text-red-500 transition-all font-black uppercase text-xs tracking-widest shadow-xl cursor-pointer"
                                                     >
@@ -1000,27 +996,27 @@ const HelpArticleDetailPage: React.FC = () => {
                                         )}
 
                                         {feedbackStatus === 'no' && (
-                                            <motion.div 
+                                            <motion.div
                                                 key="no"
                                                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
                                                 className="space-y-6"
                                             >
                                                 <h4 className="text-2xl font-black uppercase tracking-tighter text-red-500">Dites-nous pourquoi</h4>
                                                 <p className="text-sm font-bold text-[var(--text-muted)] leading-relaxed">Aidez-nous à améliorer ce guide. Votre retour est anonyme.</p>
-                                                <textarea 
+                                                <textarea
                                                     className="w-full bg-[var(--background)] border border-[var(--border)] p-4 font-bold text-sm focus:border-red-500 outline-none h-32 resize-none"
                                                     placeholder="Qu'est-ce qui manquait ?"
                                                     value={feedbackComment}
                                                     onChange={(e) => setFeedbackComment(e.target.value)}
                                                 />
                                                 <div className="flex gap-4">
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleFeedback(false, feedbackComment)}
                                                         className="px-8 py-4 bg-red-500 text-white font-black uppercase text-[10px] tracking-widest cursor-pointer hover:bg-red-600 transition-colors"
                                                     >
                                                         Envoyer le Feedback
                                                     </button>
-                                                    <button 
+                                                    <button
                                                         onClick={() => setFeedbackStatus('idle')}
                                                         className="px-8 py-4 text-[var(--text-muted)] font-black uppercase text-[10px] tracking-widest cursor-pointer"
                                                     >
@@ -1031,7 +1027,7 @@ const HelpArticleDetailPage: React.FC = () => {
                                         )}
 
                                         {(feedbackStatus === 'submitted' || feedbackStatus === 'submitting') && (
-                                            <motion.div 
+                                            <motion.div
                                                 key="submitted"
                                                 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                                                 className="text-center md:text-left space-y-4"
@@ -1080,7 +1076,7 @@ const HelpArticleDetailPage: React.FC = () => {
                                         <Link to="/help-center" className="w-full sm:w-auto bg-white text-primary px-16 py-6 font-black uppercase tracking-widest text-sm hover:scale-105 shadow-2xl transition-all flex items-center justify-center gap-4">
                                             <MessageCircle size={20} /> Ouvrir un Ticket
                                         </Link>
-                                        <a href="mailto:support@evenia.ticket" className="w-full sm:w-auto bg-transparent border-2 border-white px-16 py-6 font-black uppercase tracking-widest text-sm hover:bg-white hover:text-primary transition-all flex items-center justify-center">
+                                        <a href="mailto:anngaraevenia@gmail.com" className="w-full sm:w-auto bg-transparent border-2 border-white px-16 py-6 font-black uppercase tracking-widest text-sm hover:bg-white hover:text-primary transition-all flex items-center justify-center">
                                             Support Email
                                         </a>
                                     </div>
@@ -1092,8 +1088,22 @@ const HelpArticleDetailPage: React.FC = () => {
                 </div>
             </div>
 
+            <AnimatePresence>
+                {showCopyToast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-emerald-500 text-white px-8 py-4 font-black uppercase tracking-widest text-[10px] shadow-2xl flex items-center gap-3 border border-emerald-400"
+                    >
+                        <CheckCircle2 size={16} /> Lien copié avec succès
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* SMOOTH SCROLL STYLES */}
-            <style dangerouslySetInnerHTML={{ __html: `
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 html { scroll-behavior: smooth; }
                 .text-glow { text-shadow: 0 0 40px rgba(217,70,239,0.2); }
                 .scrollbar-hide::-webkit-scrollbar { display: none; }

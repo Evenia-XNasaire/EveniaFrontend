@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../services/api';
-import { Calendar, MapPin, Search, ChevronRight, Filter, Sparkles, Music, ChevronLeft, Facebook, CheckCircle, PlusCircle, Bell, Inbox } from 'lucide-react';
+import { Calendar, MapPin, Search, ChevronRight, Filter, Sparkles, Music, ChevronLeft, Facebook, CheckCircle, PlusCircle, Bell, Inbox, X, Smartphone, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { FaWhatsapp } from 'react-icons/fa';
 import ReactionButton from '../components/ReactionButton';
@@ -12,6 +12,8 @@ import MobileWebAppSection from '../components/home/MobileWebAppSection';
 import ServicesSection from '../components/home/ServicesSection';
 import HowItWorksSection from '../components/home/HowItWorksSection';
 import PartnersSection from '../components/home/PartnersSection';
+import { AnimatePresence } from 'framer-motion';
+import authTicket from '../assets/images/auth_ticket.png';
 
 import image1 from '../assets/images/image1.png';
 import image2 from '../assets/images/image2.png';
@@ -48,6 +50,7 @@ const HomePage: React.FC = () => {
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [filterCategory, setFilterCategory] = useState(() => localStorage.getItem('evenia_filterCategory') || '');
     const [filterDate, setFilterDate] = useState(() => localStorage.getItem('evenia_filterDate') || '');
+    const [showAppPromo, setShowAppPromo] = useState(false);
     const queryClient = useQueryClient();
 
     const [heroImageIndex, setHeroImageIndex] = useState(0);
@@ -96,6 +99,18 @@ const HomePage: React.FC = () => {
         localStorage.setItem('evenia_filterDate', filterDate);
         setPage(1);
     }, [filterCategory, filterDate]);
+
+    React.useEffect(() => {
+        // Show promo after 3 seconds on first load
+        const hasSeenPromo = sessionStorage.getItem('evenia_promo_seen');
+        if (!hasSeenPromo) {
+            const timer = setTimeout(() => {
+                setShowAppPromo(true);
+                sessionStorage.setItem('evenia_promo_seen', 'true');
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, []);
 
     const { data: eventsData, isLoading } = useQuery<PaginatedResponse>({
         queryKey: ['events', page, debouncedSearch, filterCategory, filterDate],
@@ -329,6 +344,93 @@ const HomePage: React.FC = () => {
             <HowItWorksSection />
             <PartnersSection />
             <MobileWebAppSection />
+
+            {/* App Promotion Popup */}
+            <AnimatePresence>
+                {showAppPromo && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowAppPromo(false)}
+                            className="absolute inset-0 bg-black/90 backdrop-blur-md"
+                        />
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 40 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 40 }}
+                            className="relative w-full max-w-2xl bg-[var(--surface)] border border-[var(--border)] flex flex-col md:flex-row shadow-2xl overflow-hidden"
+                        >
+                            {/* Close Button */}
+                            <button 
+                                onClick={() => setShowAppPromo(false)}
+                                className="absolute top-4 right-4 z-20 p-2 bg-black/50 text-white hover:bg-red-500 transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+
+                            {/* Left: Image Side */}
+                            <div className="hidden md:block w-2/5 relative">
+                                <img 
+                                    src={authTicket} 
+                                    className="absolute inset-0 w-full h-full object-cover" 
+                                    alt="Evenia App" 
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
+                                <div className="absolute bottom-6 left-6 right-6 text-white">
+                                    <h4 className="text-xl font-black tracking-tighter uppercase">Toujours avec vous.</h4>
+                                </div>
+                            </div>
+
+                            {/* Right: Content Side */}
+                            <div className="w-full md:w-3/5 p-8 sm:p-10 flex flex-col justify-center space-y-6">
+                                <div className="space-y-3">
+                                    <div className="inline-block px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest">
+                                        Nouveau
+                                    </div>
+                                    <h3 className="text-3xl sm:text-4xl font-black tracking-tighter uppercase leading-none">
+                                        L'App Evenia <br />
+                                        <span className="text-primary text-2xl sm:text-3xl">Est disponible</span>
+                                    </h3>
+                                    <p className="text-sm text-[var(--text-muted)] font-medium leading-relaxed">
+                                        Téléchargez notre application Android pour un accès instantané à tous vos billets, même hors ligne.
+                                    </p>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <a 
+                                        href="https://expo.dev/artifacts/eas/mp7QKQJC3edtLAifb6Bitr.apk"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="btn-primary w-full py-4 text-sm font-black flex items-center justify-center gap-3 group"
+                                    >
+                                        <Download className="w-4 h-4 group-hover:bounce" />
+                                        TÉLÉCHARGER L'APK
+                                    </a>
+                                    
+                                    <button 
+                                        onClick={() => setShowAppPromo(false)}
+                                        className="w-full py-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] hover:text-primary transition-colors"
+                                    >
+                                        Peut-être plus tard
+                                    </button>
+                                </div>
+
+                                <div className="pt-8 border-t border-[var(--border)] flex items-center justify-between grayscale opacity-50">
+                                    <div className="flex items-center gap-2 font-black text-[10px] uppercase tracking-widest">
+                                        <CheckCircle size={14} className="text-emerald-500" />
+                                        App Validée
+                                    </div>
+                                    <div className="flex items-center gap-2 font-black text-[10px] uppercase tracking-widest">
+                                        🚀 Rapide & Stable
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

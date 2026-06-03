@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, MessageSquare, Search, ChevronRight, Send, HelpCircle, Book, ShieldCheck, CreditCard } from 'lucide-react';
+import { Mail, MessageSquare, Search, ChevronRight, Send, HelpCircle, Book, ShieldCheck, CreditCard, CheckCircle, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HELP_DATA } from './HelpCategoryPage';
 
@@ -13,6 +13,7 @@ const HelpCenterPage: React.FC = () => {
         subject: '',
         message: ''
     });
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     // Flatten all articles for searching
     const allArticles = Object.entries(HELP_DATA).flatMap(([catId, cat]) =>
@@ -33,8 +34,9 @@ const HelpCenterPage: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Logique d'envoi simulée
-        alert("Merci ! Votre message a été envoyé à Evenia Ticket. Nous vous répondrons sous 24h.");
+        setShowSuccessPopup(true);
         setFormData({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setShowSuccessPopup(false), 5000);
     };
 
     const categories = [
@@ -165,7 +167,7 @@ const HelpCenterPage: React.FC = () => {
                                 </div>
                                 <div>
                                     <p className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)]">Email Support</p>
-                                    <p className="text-xl font-black">support@evenia.ticket</p>
+                                    <p className="text-xl font-black">anngaraevenia@gmail.com</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-6 p-6 bg-[var(--surface)] border border-[var(--border)] border-l-4 border-l-green-500">
@@ -239,6 +241,49 @@ const HelpCenterPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <AnimatePresence>
+                {showSuccessPopup && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowSuccessPopup(false)}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            className="relative w-full max-w-md bg-[var(--surface)] border border-[var(--border)] p-10 text-center shadow-2xl"
+                        >
+                            <button 
+                                onClick={() => setShowSuccessPopup(false)}
+                                className="absolute top-4 right-4 p-2 hover:bg-red-500/10 hover:text-red-500 transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+
+                            <div className="w-20 h-20 bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto mb-8 animate-bounce">
+                                <CheckCircle size={40} />
+                            </div>
+
+                            <h3 className="text-3xl font-black mb-4 tracking-tighter uppercase">Message Envoyé !</h3>
+                            <p className="text-[var(--text-muted)] font-medium leading-relaxed mb-8">
+                                Merci de nous avoir contacté. Votre message a bien été transmis à l'équipe <span className="text-primary">Evenia Ticket</span>. 
+                                Nous vous répondrons par email dans les plus brefs délais (généralement sous 24h).
+                            </p>
+
+                            <button
+                                onClick={() => setShowSuccessPopup(false)}
+                                className="w-full py-4 bg-primary text-white font-black uppercase tracking-widest hover:bg-primary/90 transition-colors"
+                            >
+                                Compris
+                            </button>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
