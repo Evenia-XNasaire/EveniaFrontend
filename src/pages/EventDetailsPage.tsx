@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api, { BASE_URL } from '../services/api';
 import MainLayout from '../layouts/MainLayout';
+import { encodeId, decodeId } from '../utils/idEncoder';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Calendar, MapPin, Users, Clock, Tag, Ticket,
@@ -62,12 +63,14 @@ interface EventData {
 }
 
 const EventDetailsPage: React.FC = () => {
-    const { id } = useParams();
+    const { id: rawId } = useParams();
+    const id = decodeId(rawId || '');
     const navigate = useNavigate();
     const { user } = useAuth();
     const queryClient = useQueryClient();
 
     const [selectedTickets, setSelectedTickets] = useState<{ [key: number]: number }>({});
+    const [isCopied, setIsCopied] = useState(false);
 
     const calculateServiceFee = (price: number) => {
         if (price >= 10 && price <= 9999) return { fee: Math.round(price * 0.05), label: '5%' };
@@ -84,7 +87,7 @@ const EventDetailsPage: React.FC = () => {
         if (user) {
             const saved = sessionStorage.getItem('savedTickets');
             const redirectPath = sessionStorage.getItem('redirectAfterLogin');
-            if (saved && redirectPath === `/events/${id}`) {
+            if (saved && redirectPath === `/events/${encodeId(id)}`) {
                 try {
                     setSelectedTickets(JSON.parse(saved));
                 } catch (e) { }
@@ -129,6 +132,27 @@ const EventDetailsPage: React.FC = () => {
         }, 5000);
         return () => clearInterval(interval);
     }, [allImages.length]);
+
+    React.useEffect(() => {
+        if (event) {
+            document.title = `${event.title} | Evenia Ticket`;
+            const setMetaTag = (property: string, content: string) => {
+                let meta = document.querySelector(`meta[property="${property}"]`);
+                if (!meta) {
+                    meta = document.createElement('meta');
+                    meta.setAttribute('property', property);
+                    document.head.appendChild(meta);
+                }
+                meta.setAttribute('content', content);
+            };
+            setMetaTag('og:title', event.title);
+            setMetaTag('og:description', `Réservez vos tickets pour ${event.title} à ${event.location}`);
+            setMetaTag('og:url', window.location.href);
+            if (event.image_url) {
+                setMetaTag('og:image', event.image_url);
+            }
+        }
+    }, [event]);
 
     const purchaseMutation = useMutation({
         mutationFn: async (payload: { items: { ticket_type_id: number; quantity: number }[]; operator: string; phone_number: string }) => {
@@ -195,21 +219,53 @@ const EventDetailsPage: React.FC = () => {
         }
     });
 
-    const handleShare = () => {
+    const handleCopyLink = async () => {
         if (!event) return;
         const shareUrl = window.location.href;
-        const shareText = `Découvrez cet événement sur Evenia Ticket : ${event.title}\n📅 ${format(new Date(event.date_time), 'd MMMM yyyy HH:mm', { locale: fr })}\n📍 ${event.location}\n\nRéservez vos places ici : ${shareUrl}`;
+        const imageUrl = event.image_url || event.additional_image_urls?.[0];
+        
+        const htmlContent = `
+            <div style="font-family: sans-serif; max-width: 500px;">
+                <h3 style="margin-bottom: 8px;">${event.title}</h3>
+                ${imageUrl ? `<img src="${imageUrl}" alt="${event.title}" style="max-width: 100%; border-radius: 8px; margin-bottom: 12px;" />` : ''}
+                <p style="margin: 4px 0;">📅 <strong>Date :</strong> ${format(new Date(event.date_time), 'd MMMM yyyy HH:mm', { locale: fr })}</p>
+                <p style="margin: 4px 0;">📍 <strong>Lieu :</strong> ${event.location}</p>
+                ${event.description ? `<p style="margin: 12px 0; font-size: 14px; color: #4b5563;">${event.description.replace(/\n/g, '<br/>')}</p>` : ''}
+                <p style="margin-top: 16px;">
+                    <a href="${shareUrl}" style="background: #2563eb; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;">
+                        Réservez vos places ici !
+                    </a>
+                </p>
+            </div>
+        `;
+        
+        const shareText = `Découvrez cet événement sur Evenia Ticket : ${event.title}\n📅 ${format(new Date(event.date_time), 'd MMMM yyyy HH:mm', { locale: fr })}\n📍 ${event.location}\n\n${event.description ? event.description + '\n\n' : ''}Réservez vos places ici : ${shareUrl}`;
 
-        if (navigator.share) {
-            navigator.share({
-                title: event.title,
-                text: shareText,
-                url: shareUrl,
-            }).catch(console.error);
-        } else {
-            // Fallback: Copy to clipboard or direct social links
-            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-            window.open(whatsappUrl, '_blank');
+        try {
+            if (navigator.clipboard && window.ClipboardItem) {
+                const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+                const textBlob = new Blob([shareText], { type: 'text/plain' });
+                
+                await navigator.clipboard.write([
+                    new window.ClipboardItem({
+                        'text/html': htmlBlob,
+                        'text/plain': textBlob,
+                    })
+                ]);
+            } else {
+                await navigator.clipboard.writeText(shareText);
+            }
+            setIsCopied(true);
+            setTimeout(() => setIsCopied(false), 2000);
+        } catch (error) {
+            console.error('Failed to copy', error);
+            try {
+                await navigator.clipboard.writeText(shareText);
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 2000);
+            } catch (err) {
+                console.error('Text fallback failed', err);
+            }
         }
     };
 
@@ -259,7 +315,7 @@ const EventDetailsPage: React.FC = () => {
 
     const handlePurchase = () => {
         if (!user) {
-            sessionStorage.setItem('redirectAfterLogin', `/events/${id}`);
+            sessionStorage.setItem('redirectAfterLogin', `/events/${encodeId(id)}`);
             sessionStorage.setItem('savedTickets', JSON.stringify(selectedTickets));
             navigate('/login');
             return;
@@ -581,21 +637,29 @@ const EventDetailsPage: React.FC = () => {
 
                         <div className="flex items-center gap-1.5 sm:gap-2 pt-1 sm:pt-0">
                             <button
-                                onClick={handleShare}
-                                className="w-7 h-7 sm:w-8 sm:h-8 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all flex items-center justify-center shrink-0 border border-white/10"
-                                title="Partager"
+                                onClick={handleCopyLink}
+                                className={`w-7 h-7 sm:w-8 sm:h-8 bg-white/10 backdrop-blur-md transition-all flex items-center justify-center shrink-0 border border-white/10 ${isCopied ? 'bg-green-500/20 border-green-500/50' : 'hover:bg-white/20'}`}
+                                title="Copier le lien"
                             >
-                                <Share2 className="text-white w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                <AnimatePresence mode="wait">
+                                    {isCopied ? (
+                                        <motion.div key="copied" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
+                                            <CheckCircle2 className="text-green-400 w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                        </motion.div>
+                                    ) : (
+                                        <motion.div key="share" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
+                                            <Share2 className="text-white w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </button>
-                            <a
-                                href={`https://wa.me/?text=${encodeURIComponent(`Découvrez cet événement sur Evenia Ticket : ${event.title}\n📅 ${format(new Date(event.date_time), 'd MMMM yyyy HH:mm', { locale: fr })}\n📍 ${event.location}\n\nRéservez vos places ici : ${window.location.href}`)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <button
+                                onClick={handleCopyLink}
                                 className="w-7 h-7 sm:w-8 sm:h-8 bg-green-500/20 backdrop-blur-md hover:bg-green-500/80 transition-all flex items-center justify-center text-white shrink-0"
-                                title="Partager sur WhatsApp"
+                                title="Copier le lien"
                             >
                                 <FaWhatsapp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                            </a>
+                            </button>
                             <ReactionButton
                                 eventId={event.id}
                                 userReactions={event.user_reactions || []}
@@ -611,7 +675,7 @@ const EventDetailsPage: React.FC = () => {
             <div className="max-w-7xl mx-auto px-4 py-10 space-y-10">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
                     {/* Main Content */}
-                    <div className="lg:col-span-3 space-y-6 lg:max-h-[calc(100vh-150px)] lg:overflow-y-auto lg:pr-4 custom-scrollbar">
+                    <div className="lg:col-span-3 space-y-6 lg:pr-4">
                         {/* Summary & Description directly at top of content */}
                         <div className="card-surface p-6 sm:p-8 space-y-6">
                             <div className="flex items-center gap-4">
@@ -700,7 +764,7 @@ const EventDetailsPage: React.FC = () => {
                     </div>
 
                     {/* Sidebar - Ticket Selection */}
-                    <div id="tickets-section" className="lg:col-span-2 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto lg:sticky lg:top-24 custom-scrollbar">
+                    <div id="tickets-section" className="lg:col-span-2">
                         <div className="space-y-6">
                             <div className="card-surface p-6 sm:p-8 space-y-6">
                                 <h3 className="text-xl sm:text-2xl font-black flex items-center gap-2">
@@ -771,6 +835,7 @@ const EventDetailsPage: React.FC = () => {
 
                                 {totalTickets > 0 && (
                                     <motion.div
+                                        id="payment-form"
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         className="pt-6 border-t border-[var(--border)] space-y-4"
@@ -906,14 +971,20 @@ const EventDetailsPage: React.FC = () => {
             </div>
 
             {/* Sticky Mobile Buy Button */}
-            <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] w-full px-6">
-                <a
-                    href="#tickets-section"
-                    className="flex items-center justify-center gap-2 w-full bg-primary text-white py-4 rounded-2xl font-black text-lg shadow-2xl shadow-primary/40 animate-pulse-subtle"
+            <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] w-full px-6 pointer-events-none">
+                <button
+                    onClick={() => {
+                        if (totalTickets > 0) {
+                            document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            document.getElementById('tickets-section')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }}
+                    className="flex items-center justify-center gap-2 w-full bg-primary text-white py-4 rounded-2xl font-black text-lg shadow-2xl shadow-primary/40 animate-pulse-subtle pointer-events-auto"
                 >
                     <Ticket size={24} />
-                    RÉSERVER MES BILLETS
-                </a>
+                    {totalTickets > 0 ? `PAYER (${totalAmount.toLocaleString('fr-FR')} FCFA)` : `RÉSERVER MES BILLETS`}
+                </button>
             </div>
 
             <style dangerouslySetInnerHTML={{

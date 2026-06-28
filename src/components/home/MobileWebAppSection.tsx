@@ -4,12 +4,18 @@ import { Smartphone, Monitor, Globe } from 'lucide-react';
 import { FaGooglePlay, FaApple } from 'react-icons/fa';
 
 const DOWNLOAD_LINKS = {
-    android: "https://expo.dev/artifacts/eas/mp7QKQJC3edtLAifb6Bitr.apk", // Lien final build a5311878
+    android: "https://expo.dev/artifacts/eas/mp7QKQJC3edtLAifb6Bitr.apk", // Fallback URL
     ios: "#", // À définir plus tard
     web: "https://evenia.arited.org"
 };
 
-const MobileWebAppSection: React.FC = () => {
+interface MobileWebAppSectionProps {
+    apkUrl?: string;
+}
+
+const MobileWebAppSection: React.FC<MobileWebAppSectionProps> = ({ apkUrl }) => {
+    const finalApkUrl = apkUrl || DOWNLOAD_LINKS.android;
+
     return (
         <section className="py-24 relative overflow-hidden">
             <div className="absolute inset-0 bg-primary/5 -skew-y-3 transform origin-top-left scale-110 z-0" />
@@ -43,7 +49,7 @@ const MobileWebAppSection: React.FC = () => {
                                     <div className="text-base leading-none whitespace-nowrap">App Store (iOS)</div>
                                 </div>
                             </a>
-                            <a href={DOWNLOAD_LINKS.android} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--text)] text-[var(--background)] px-6 py-4 rounded-none font-black hover:bg-primary hover:text-white transition-all group">
+                            <a href={finalApkUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[var(--text)] text-[var(--background)] px-6 py-4 rounded-none font-black hover:bg-primary hover:text-white transition-all group">
 
                                 <FaGooglePlay className="w-5 h-5 ml-1" />
                                 <div className="text-left">

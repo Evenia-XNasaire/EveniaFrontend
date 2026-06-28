@@ -2,19 +2,22 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { motion } from 'framer-motion';
-import { Ticket, DollarSign, Plus, Calendar as CalendarIcon, MapPin, Edit3, Trash2, BarChart3, Heart, MessageSquare } from 'lucide-react';
+import { Ticket, DollarSign, Plus, Calendar as CalendarIcon, MapPin, Edit3, Trash2, BarChart3, Heart, MessageSquare, Share2, CheckCircle2 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api, { BASE_URL } from '../services/api';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
+import { encodeId } from '../utils/idEncoder';
+import { copyEventLink } from '../utils/shareUtils';
 
 const OrganizerDashboard: React.FC = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
 
     const queryClient = useQueryClient();
+    const [copiedEventId, setCopiedEventId] = React.useState<number | null>(null);
 
     const [eventsPage, setEventsPage] = React.useState(1);
     const { data: eventsData, isLoading } = useQuery({
@@ -180,7 +183,7 @@ const OrganizerDashboard: React.FC = () => {
                                     ) : eventsData?.data?.map((event: any) => (
                                         <tr
                                             key={event.id}
-                                            onClick={() => navigate(`/organizer/events/${event.id}`)}
+                                            onClick={() => navigate(`/organizer/events/${encodeId(event.id)}`)}
                                             className="hover:bg-primary/5 transition-colors group cursor-pointer"
                                         >
                                             <td className="px-6 py-6">
@@ -255,7 +258,19 @@ const OrganizerDashboard: React.FC = () => {
                                                     <button
                                                         onClick={(e) => {
                                                             e.stopPropagation();
-                                                            navigate(`/organizer/edit/${event.id}`);
+                                                            copyEventLink(event, `${window.location.origin}/events/${encodeId(event.id)}`).then(() => {
+                                                                setCopiedEventId(event.id);
+                                                                setTimeout(() => setCopiedEventId(null), 2000);
+                                                            });
+                                                        }}
+                                                        className={`p-2 rounded-lg transition-all ${copiedEventId === event.id ? 'bg-green-500/10 text-green-500' : 'bg-[var(--surface)] text-[var(--text-muted)] hover:text-primary hover:bg-primary/10'}`}
+                                                    >
+                                                        {copiedEventId === event.id ? <CheckCircle2 size={18} /> : <Share2 size={18} />}
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            navigate(`/organizer/edit/${encodeId(event.id)}`);
                                                         }}
                                                         className="p-2 rounded-lg bg-[var(--surface)] text-[var(--text-muted)] hover:text-primary hover:bg-primary/10 transition-all"
                                                     >

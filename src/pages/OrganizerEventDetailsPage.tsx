@@ -7,10 +7,12 @@ import { useAuth } from '../hooks/useAuth';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Calendar, MapPin, DollarSign, ArrowLeft, Ticket as TicketIcon, Clock, TrendingUp, Heart, MessageSquare, CheckCircle, XCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { decodeId } from '../utils/idEncoder';
 
 const OrganizerEventDetailsPage: React.FC = () => {
     const { user } = useAuth();
-    const { id } = useParams<{ id: string }>();
+    const { id: rawId } = useParams<{ id: string }>();
+    const id = decodeId(rawId || '');
     const navigate = useNavigate();
 
     const { data, isLoading } = useQuery({

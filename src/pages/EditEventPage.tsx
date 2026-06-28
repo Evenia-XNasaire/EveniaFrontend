@@ -9,6 +9,7 @@ import {
     Ticket
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { decodeId } from '../utils/idEncoder';
 import DashboardLayout from '../layouts/DashboardLayout';
 
 interface TicketTypeInput {
@@ -20,7 +21,8 @@ interface TicketTypeInput {
 }
 
 const EditEventPage: React.FC = () => {
-    const { id } = useParams();
+    const { id: rawId } = useParams();
+    const id = decodeId(rawId || '');
     const { user } = useAuth();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);

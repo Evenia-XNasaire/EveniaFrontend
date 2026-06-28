@@ -4,10 +4,11 @@ import api from '../services/api';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { Users, Calendar, DollarSign, Activity, Trash2, UserPlus, UserMinus, ShoppingBag, Edit, MessageSquare } from 'lucide-react';
+import { Users, Calendar, DollarSign, Activity, Trash2, UserPlus, UserMinus, ShoppingBag, Edit, MessageSquare, Settings, Smartphone, Save, CheckCircle2, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AdminDashboard: React.FC = () => {
     const { user } = useAuth();
@@ -48,7 +49,37 @@ const AdminDashboard: React.FC = () => {
         enabled: isAdmin,
     });
 
+    const [apkUrl, setApkUrl] = React.useState('');
+    const [showSuccessPopup, setShowSuccessPopup] = React.useState(false);
 
+    const { data: settingsData } = useQuery({
+        queryKey: ['admin-settings'],
+        queryFn: async () => {
+            const res = await api.get('/settings');
+            return res.data;
+        },
+        enabled: isAdmin,
+    });
+
+    React.useEffect(() => {
+        if (settingsData?.apk_download_url) {
+            setApkUrl(settingsData.apk_download_url);
+        }
+    }, [settingsData]);
+
+    const updateSettingsMutation = useMutation({
+        mutationFn: async (url: string) => {
+            await api.post('/admin/settings', { settings: { apk_download_url: url } });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin-settings'] });
+            setShowSuccessPopup(true);
+            setTimeout(() => setShowSuccessPopup(false), 3000);
+        },
+        onError: () => {
+            alert('Erreur lors de la mise à jour.');
+        }
+    });
 
     const deleteEventMutation = useMutation({
         mutationFn: async (id: number) => {
@@ -447,7 +478,68 @@ const AdminDashboard: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* App Settings */}
+                <section className="space-y-4 pt-10">
+                    <h2 className="text-xl font-bold flex items-center gap-2">
+                        <Settings className="text-[var(--text-muted)]" />
+                        Paramètres de l'Application
+                    </h2>
+                    <div className="card-surface p-8 max-w-2xl">
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-bold mb-2 flex items-center gap-2">
+                                    <Smartphone size={16} />
+                                    URL de téléchargement APK Android
+                                </label>
+                                <p className="text-xs text-[var(--text-muted)] mb-4">
+                                    Mettez à jour le lien de l'application Android (Expo / EAS). Ce lien sera mis à jour sur la page d'accueil et le popup de téléchargement.
+                                </p>
+                                <div className="flex gap-4">
+                                    <input 
+                                        type="url" 
+                                        value={apkUrl}
+                                        onChange={(e) => setApkUrl(e.target.value)}
+                                        placeholder="https://expo.dev/artifacts/..." 
+                                        className="input-field flex-1"
+                                    />
+                                    <button 
+                                        onClick={() => updateSettingsMutation.mutate(apkUrl)}
+                                        disabled={updateSettingsMutation.isPending}
+                                        className="btn-primary px-6 flex items-center gap-2 disabled:opacity-50"
+                                    >
+                                        <Save size={16} />
+                                        {updateSettingsMutation.isPending ? 'Sauvegarde...' : 'Sauvegarder'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </main>
+
+            {/* Success Popup */}
+            <AnimatePresence>
+                {showSuccessPopup && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="fixed bottom-10 right-10 z-[100] bg-[var(--surface)] border-2 border-emerald-500 rounded-2xl shadow-2xl p-6 flex items-start gap-4 max-w-sm"
+                    >
+                        <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
+                            <CheckCircle2 size={24} />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="font-black text-lg text-emerald-500 uppercase tracking-tighter">Succès</h3>
+                            <p className="text-sm font-medium text-[var(--text-muted)] mt-1">L'URL de l'application a bien été mise à jour !</p>
+                        </div>
+                        <button onClick={() => setShowSuccessPopup(false)} className="text-[var(--text-muted)] hover:text-danger transition-colors p-1">
+                            <X size={16} />
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </DashboardLayout >
     );
 };

@@ -4,7 +4,10 @@ import api from '../services/api';
 import { Calendar, MapPin, Search, ChevronRight, Filter, Sparkles, Music, ChevronLeft, Facebook, CheckCircle, PlusCircle, Bell, Inbox, X, Smartphone, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { FaWhatsapp } from 'react-icons/fa';
+import Footer from '../components/Footer';
 import ReactionButton from '../components/ReactionButton';
+import { encodeId } from '../utils/idEncoder';
+import { copyEventLink } from '../utils/shareUtils';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { motion } from 'framer-motion';
@@ -51,6 +54,7 @@ const HomePage: React.FC = () => {
     const [filterCategory, setFilterCategory] = useState(() => localStorage.getItem('evenia_filterCategory') || '');
     const [filterDate, setFilterDate] = useState(() => localStorage.getItem('evenia_filterDate') || '');
     const [showAppPromo, setShowAppPromo] = useState(false);
+    const [copiedEventId, setCopiedEventId] = useState<number | null>(null);
     const queryClient = useQueryClient();
 
     const [heroImageIndex, setHeroImageIndex] = useState(0);
@@ -100,17 +104,27 @@ const HomePage: React.FC = () => {
         setPage(1);
     }, [filterCategory, filterDate]);
 
+    const { data: settingsData } = useQuery({
+        queryKey: ['public-settings'],
+        queryFn: async () => {
+            const res = await api.get('/settings');
+            return res.data;
+        },
+    });
+
+    const apkUrl = settingsData?.apk_download_url || "https://expo.dev/artifacts/eas/mp7QKQJC3edtLAifb6Bitr.apk";
+
     React.useEffect(() => {
         // Show promo after 3 seconds on first load
         const hasSeenPromo = sessionStorage.getItem('evenia_promo_seen');
-        if (!hasSeenPromo) {
+        if (!hasSeenPromo && apkUrl) {
             const timer = setTimeout(() => {
                 setShowAppPromo(true);
                 sessionStorage.setItem('evenia_promo_seen', 'true');
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, []);
+    }, [apkUrl]);
 
     const { data: eventsData, isLoading } = useQuery<PaginatedResponse>({
         queryKey: ['events', page, debouncedSearch, filterCategory, filterDate],
@@ -269,7 +283,7 @@ const HomePage: React.FC = () => {
                                 className="group bg-[var(--surface)] rounded-none border border-[var(--border)] overflow-hidden hover:shadow-2xl transition-all duration-500"
                             >
                                 <div className="relative aspect-[4/3] overflow-hidden">
-                                    <Link to={`/events/${event.id}`} className="block w-full h-full">
+                                    <Link to={`/events/${encodeId(event.id)}`} className="block w-full h-full">
                                         <img
                                             src={event.image_url || 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4'}
                                             alt={event.title}
@@ -277,12 +291,34 @@ const HomePage: React.FC = () => {
                                         />
                                     </Link>
                                     <div className="absolute top-4 right-4 flex gap-2 z-10">
-                                        <a href={`https://wa.me/?text=${encodeURIComponent(event.title)}`} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition-transform">
-                                            <FaWhatsapp size={14} />
-                                        </a>
-                                        <a href={`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform">
-                                            <Facebook size={14} />
-                                        </a>
+                                        <button 
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                copyEventLink(event, `${window.location.origin}/events/${encodeId(event.id)}`).then(() => {
+                                                    setCopiedEventId(event.id);
+                                                    setTimeout(() => setCopiedEventId(null), 2000);
+                                                });
+                                            }}
+                                            className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition-transform"
+                                            title="Copier le lien"
+                                        >
+                                            {copiedEventId === event.id ? <CheckCircle size={14} /> : <FaWhatsapp size={14} />}
+                                        </button>
+                                        <button 
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                copyEventLink(event, `${window.location.origin}/events/${encodeId(event.id)}`).then(() => {
+                                                    setCopiedEventId(event.id);
+                                                    setTimeout(() => setCopiedEventId(null), 2000);
+                                                });
+                                            }}
+                                            className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform"
+                                            title="Copier le lien"
+                                        >
+                                            {copiedEventId === event.id ? <CheckCircle size={14} /> : <Facebook size={14} />}
+                                        </button>
                                     </div>
                                     <div className="absolute bottom-4 left-4">
                                         <div className="px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest">
@@ -312,7 +348,7 @@ const HomePage: React.FC = () => {
                                     </div>
                                     <div className="pt-6 border-t border-[var(--border)] flex items-center justify-between">
                                         <p className="text-xl font-black text-primary">{event.ticket_types[0]?.price?.toLocaleString() || 0} FCFA</p>
-                                        <Link to={`/events/${event.id}`} className="px-6 py-3 bg-[var(--text)] text-[var(--background)] font-black text-sm hover:bg-primary hover:text-white transition-all">
+                                        <Link to={`/events/${encodeId(event.id)}`} className="px-6 py-3 bg-[var(--text)] text-[var(--background)] font-black text-sm hover:bg-primary hover:text-white transition-all">
                                             RÉSERVER
                                         </Link>
                                     </div>
@@ -343,7 +379,7 @@ const HomePage: React.FC = () => {
             <ServicesSection />
             <HowItWorksSection />
             <PartnersSection />
-            <MobileWebAppSection />
+            <MobileWebAppSection apkUrl={apkUrl} />
 
             {/* App Promotion Popup */}
             <AnimatePresence>
@@ -400,7 +436,7 @@ const HomePage: React.FC = () => {
 
                                 <div className="space-y-3">
                                     <a 
-                                        href="https://expo.dev/artifacts/eas/mp7QKQJC3edtLAifb6Bitr.apk"
+                                        href={apkUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="btn-primary w-full py-4 text-sm font-black flex items-center justify-center gap-3 group"
@@ -431,6 +467,7 @@ const HomePage: React.FC = () => {
                     </div>
                 )}
             </AnimatePresence>
+            <Footer />
         </div>
     );
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -11,7 +10,6 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <main className="flex-1 w-full pt-14 sm:pt-20">
                 {children}
             </main>
-            <Footer />
         </div>
     );
 };

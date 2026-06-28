@@ -46,8 +46,10 @@ const Sidebar: React.FC<SidebarProps> = ({ role, isOpen, onClose }) => {
         { to: '/admin/users', icon: <Users />, label: 'Utilisateurs' },
         { to: '/admin/events?category=match', icon: <Calendar />, label: 'Gestion Matchs' },
         { to: '/admin/events?category=evenia', icon: <Music />, label: 'Gestion Événements' },
+        { to: '/my-tickets', icon: <Ticket />, label: 'Mes Billets' },
         { to: '/admin/wallet', icon: <Wallet />, label: 'Mon Portefeuille' },
         { to: '/admin/stats', icon: <BarChart3 />, label: 'Statistiques' },
+        { to: '/profile/history', icon: <Settings />, label: 'Historique' },
     ];
 
     const clientLinks = [
