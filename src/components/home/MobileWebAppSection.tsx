@@ -4,7 +4,7 @@ import { Smartphone, Monitor, Globe } from 'lucide-react';
 import { FaGooglePlay, FaApple } from 'react-icons/fa';
 
 const DOWNLOAD_LINKS = {
-    android: "https://expo.dev/artifacts/eas/mp7QKQJC3edtLAifb6Bitr.apk", // Fallback URL
+    android: "https://expo.dev/artifacts/eas/tDjnAihNZJbj31u2JznoVpuV2Z6p_5QzXBghbZdbGd0.apk", // Fallback URL
     ios: "#", // À définir plus tard
     web: "https://evenia.arited.org"
 };

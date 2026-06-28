@@ -112,7 +112,7 @@ const HomePage: React.FC = () => {
         },
     });
 
-    const apkUrl = settingsData?.apk_download_url || "https://expo.dev/artifacts/eas/mp7QKQJC3edtLAifb6Bitr.apk";
+    const apkUrl = settingsData?.apk_download_url || "https://expo.dev/artifacts/eas/tDjnAihNZJbj31u2JznoVpuV2Z6p_5QzXBghbZdbGd0.apk";
 
     React.useEffect(() => {
         // Show promo after 3 seconds on first load
